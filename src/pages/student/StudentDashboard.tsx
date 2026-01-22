@@ -44,7 +44,7 @@ const StudentDashboard = () => {
                     {/* Decorative circles */}
                     <div className="absolute top-0 right-0 w-64 h-64 bg-[#B9FF66] rounded-full opacity-10 blur-3xl"></div>
                     <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#B9FF66] rounded-full opacity-10 blur-3xl"></div>
-                    
+
                     <div className="relative z-10">
                         <p className="text-[#B9FF66] text-xs md:text-sm font-semibold mb-1 md:mb-2">Welcome back,</p>
                         <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-1 md:mb-2 font-geist">
@@ -72,16 +72,22 @@ const StudentDashboard = () => {
                             <motion.div
                                 key={idx}
                                 initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.1 + idx * 0.05 }}
-                                className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all"
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
+                                transition={{ duration: 0.5, delay: 0.1 + idx * 0.05, ease: "easeOut" }}
+                                whileHover={{
+                                    y: -2,
+                                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+                                    transition: { duration: 0.2 }
+                                }}
+                                className="bg-white rounded-xl p-4 shadow-sm cursor-pointer"
                             >
                                 <div className="flex items-center gap-4">
                                     {/* Icon - compact */}
                                     <div className="w-12 h-12 bg-[#F3F3F3] rounded-xl flex items-center justify-center flex-shrink-0">
                                         <Icon className="w-5 h-5 text-[#191A23]" />
                                     </div>
-                                    
+
                                     {/* Content */}
                                     <div className="flex-1 min-w-0">
                                         <div className="flex items-center gap-2 mb-1">
@@ -118,9 +124,11 @@ const StudentDashboard = () => {
                                         <motion.div
                                             key={course.id}
                                             initial={{ opacity: 0, x: -20 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ duration: 0.5, delay: 0.2 + idx * 0.1 }}
-                                            className="p-4 bg-[#F3F3F3] rounded-xl hover:bg-gray-100 transition-all cursor-pointer group"
+                                            whileInView={{ opacity: 1, x: 0 }}
+                                            viewport={{ once: true, margin: "-20px" }}
+                                            transition={{ duration: 0.5, delay: idx * 0.1, ease: "easeOut" }}
+                                            whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
+                                            className="p-4 bg-[#F3F3F3] rounded-xl hover:bg-gray-100 cursor-pointer group"
                                         >
                                             <div className="flex items-start gap-4 mb-3">
                                                 <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-sm group-hover:scale-105 transition-transform">
@@ -143,7 +151,7 @@ const StudentDashboard = () => {
                                                 </div>
                                             </div>
                                             <div className="w-full h-2 bg-white rounded-full overflow-hidden">
-                                                <div 
+                                                <div
                                                     className="h-full bg-[#B9FF66] transition-all duration-500"
                                                     style={{ width: `${course.progress}%` }}
                                                 />

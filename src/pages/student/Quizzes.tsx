@@ -184,21 +184,19 @@ const Quizzes = () => {
                 >
                     <button
                         onClick={() => setActiveTab('upcoming')}
-                        className={`px-6 py-3 rounded-lg font-semibold text-sm transition-all ${
-                            activeTab === 'upcoming'
+                        className={`px-6 py-3 rounded-lg font-semibold text-sm transition-all ${activeTab === 'upcoming'
                                 ? 'bg-[#B9FF66] text-[#191A23]'
                                 : 'text-gray-600 hover:bg-gray-50'
-                        }`}
+                            }`}
                     >
                         Upcoming ({upcomingQuizzes.length})
                     </button>
                     <button
                         onClick={() => setActiveTab('completed')}
-                        className={`px-6 py-3 rounded-lg font-semibold text-sm transition-all ${
-                            activeTab === 'completed'
+                        className={`px-6 py-3 rounded-lg font-semibold text-sm transition-all ${activeTab === 'completed'
                                 ? 'bg-[#B9FF66] text-[#191A23]'
                                 : 'text-gray-600 hover:bg-gray-50'
-                        }`}
+                            }`}
                     >
                         Completed ({completedQuizzes.length})
                     </button>
@@ -211,9 +209,15 @@ const Quizzes = () => {
                             <motion.div
                                 key={quiz.id}
                                 initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.5, delay: 0.3 + idx * 0.1 }}
-                                className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all group"
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ duration: 0.5, delay: idx * 0.1, ease: "easeOut" }}
+                                whileHover={{
+                                    y: -4,
+                                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+                                    transition: { duration: 0.2 }
+                                }}
+                                className="bg-white rounded-xl overflow-hidden shadow-sm group cursor-pointer"
                             >
                                 <div className={`h-3 ${quiz.color}`}></div>
                                 <div className="p-6 space-y-4">
@@ -246,7 +250,7 @@ const Quizzes = () => {
                                         </div>
                                     </div>
 
-                                    <button 
+                                    <button
                                         onClick={() => navigate(`/student/quiz/${quiz.id}`)}
                                         className="w-full bg-[#191A23] text-[#B9FF66] py-3 rounded-xl font-bold hover:bg-[#2a2b3a] transition-colors flex items-center justify-center gap-2 group-hover:scale-[1.02] transition-transform"
                                     >
@@ -266,18 +270,23 @@ const Quizzes = () => {
                             <motion.div
                                 key={quiz.id}
                                 initial={{ opacity: 0, x: -20 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                transition={{ duration: 0.5, delay: 0.3 + idx * 0.1 }}
-                                className="bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all"
+                                whileInView={{ opacity: 1, x: 0 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ duration: 0.5, delay: idx * 0.1, ease: "easeOut" }}
+                                whileHover={{
+                                    y: -2,
+                                    boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+                                    transition: { duration: 0.2 }
+                                }}
+                                className="bg-white rounded-xl p-6 shadow-sm"
                             >
                                 <div className="flex flex-col md:flex-row md:items-center gap-6">
                                     {/* Left: Quiz Info */}
                                     <div className="flex-1">
                                         <div className="flex items-start gap-4">
                                             <div className={`w-16 h-16 rounded-xl ${quiz.color} flex items-center justify-center flex-shrink-0`}>
-                                                <CheckCircle className={`w-8 h-8 ${
-                                                    quiz.color === 'bg-[#191A23]' ? 'text-[#B9FF66]' : 'text-[#191A23]'
-                                                }`} />
+                                                <CheckCircle className={`w-8 h-8 ${quiz.color === 'bg-[#191A23]' ? 'text-[#B9FF66]' : 'text-[#191A23]'
+                                                    }`} />
                                             </div>
                                             <div className="flex-1">
                                                 <h3 className="font-bold text-lg text-[#191A23] mb-1">{quiz.title}</h3>
@@ -311,7 +320,7 @@ const Quizzes = () => {
                                             </div>
                                             <p className="text-xs text-gray-500 mt-1">Correct</p>
                                         </div>
-                                        <button 
+                                        <button
                                             onClick={() => navigate(`/student/quiz/${quiz.id}/review`)}
                                             className="ml-4 px-4 py-2 bg-[#F3F3F3] text-[#191A23] rounded-lg font-semibold text-sm hover:bg-gray-200 transition-colors flex items-center gap-2"
                                         >

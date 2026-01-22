@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 import { Target, Trophy, BarChart3, TrendingUp, Users, Smartphone, ArrowRight } from 'lucide-react';
 
@@ -15,7 +14,7 @@ const Features = () => {
     return (
         <section id="features" className="py-16 md:py-24 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <motion.div 
+                <motion.div
                     className="grid md:grid-cols-2 gap-6 md:gap-8 items-start md:items-center mb-12 md:mb-16 pb-6 md:pb-8 border-b-2 border-[#191A23]"
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -30,18 +29,23 @@ const Features = () => {
                     </p>
                 </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 pb-4 md:pb-0 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
                     {features.map((feature, idx) => {
                         const Icon = feature.icon;
                         return (
                             <motion.div
                                 key={idx}
-                                className={`${feature.bg} border-2 border-[#191A23] rounded-[24px] md:rounded-[32px] p-6 md:p-8 flex flex-col justify-between min-h-[220px] md:min-h-[280px] transition-all hover:shadow-lg`}
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, amount: 0.2 }}
-                                transition={{ duration: 0.4, delay: idx * 0.08, ease: "easeOut" }}
-                                whileHover={{ y: -4, scale: 1.02, transition: { duration: 0.2 } }}
+                                className={`${feature.bg} border-2 border-[#191A23] rounded-[24px] md:rounded-[32px] p-6 md:p-8 flex flex-col justify-between min-h-[220px] md:min-h-[280px] cursor-pointer min-w-[85%] snap-center md:min-w-0`}
+                                initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                                whileHover={{
+                                    y: -4,
+                                    scale: 1.02,
+                                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+                                    transition: { duration: 0.2 }
+                                }}
                             >
                                 <div className="flex justify-between items-start mb-3 md:mb-4">
                                     <h3 className={`text-base md:text-xl font-semibold ${feature.textBg} text-[#191A23] px-2 py-1 rounded-md inline-block`}>

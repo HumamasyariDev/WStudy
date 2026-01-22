@@ -32,24 +32,30 @@ const Categories = () => {
                     {categories.map((cat, idx) => (
                         <motion.div
                             key={idx}
-                            className={`p-6 md:p-8 rounded-[32px] md:rounded-[45px] border-2 border-[#191A23] shadow-[0_4px_0_#191A23] ${cat.bg} flex flex-col sm:flex-row items-start sm:items-center justify-between group transition-all hover:-translate-y-1 hover:shadow-[0_6px_0_#191A23]`}
+                            className={`p-4 md:p-8 rounded-2xl md:rounded-[45px] border-2 border-[#191A23] shadow-[0_4px_0_#191A23] ${cat.bg} flex flex-col sm:flex-row items-start sm:items-center justify-between group cursor-pointer`}
                             initial={{ opacity: 0, y: 30 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-50px" }}
                             transition={{ duration: 0.5, delay: idx * 0.1, ease: "easeOut" }}
+                            whileHover={{
+                                y: -4,
+                                boxShadow: "0 6px 0 #191A23",
+                                scale: 1.02,
+                                transition: { duration: 0.2 }
+                            }}
                         >
-                            <div className="flex flex-col justify-between h-full gap-4 md:gap-6 flex-1">
-                                <h3 className={`text-lg md:text-xl font-bold rounded-md px-2 py-1 inline-block ${cat.textBg} text-[#191A23]`}>{cat.title}</h3>
-                                <div className="flex items-center gap-2 cursor-pointer">
+                            <div className="flex flex-col justify-between h-full gap-3 md:gap-6 flex-1 w-full">
+                                <h3 className={`text-base md:text-xl font-bold rounded-md px-2 py-1 inline-block ${cat.textBg} text-[#191A23]`}>{cat.title}</h3>
+                                <div className="flex items-center gap-2">
                                     <div className="w-7 h-7 md:w-8 md:h-8 rounded-full flex items-center justify-center bg-[#191A23] text-[#B9FF66]">
                                         <svg className="w-3.5 h-3.5 md:w-4 md:h-4 -rotate-45" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                                     </div>
                                     <span className="text-xs md:text-sm font-medium text-[#191A23]">Enroll Now</span>
                                 </div>
                             </div>
-                            <div className="w-16 h-16 md:w-20 md:h-20 flex items-center justify-center mt-4 sm:mt-0 sm:ml-4">
-                                <div className="w-full h-full rounded-full flex items-center justify-center bg-white">
-                                    {cat.icon}
+                            <div className="absolute right-4 top-4 sm:relative sm:right-auto sm:top-auto w-12 h-12 md:w-20 md:h-20 flex items-center justify-center mt-0 sm:mt-0 sm:ml-4">
+                                <div className="w-full h-full rounded-full flex items-center justify-center bg-white shadow-sm border border-gray-100 sm:border-none">
+                                    {React.cloneElement(cat.icon as React.ReactElement, { className: "w-5 h-5 md:w-6 md:h-6 text-[#191A23]" })}
                                 </div>
                             </div>
                         </motion.div>

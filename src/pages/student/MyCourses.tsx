@@ -12,12 +12,12 @@ const MyCourses = () => {
     const categories = ['All', 'Mathematics', 'Science', 'Language', 'Technology', 'Arts', 'History'];
 
     const courses = [
-        { 
-            id: 1, 
-            title: 'Advanced Calculus', 
-            category: 'Mathematics', 
-            icon: Calculator, 
-            progress: 68, 
+        {
+            id: 1,
+            title: 'Advanced Calculus',
+            category: 'Mathematics',
+            icon: Calculator,
+            progress: 68,
             instructor: 'Dr. Sarah Johnson',
             students: 234,
             rating: 4.8,
@@ -26,12 +26,12 @@ const MyCourses = () => {
             nextLesson: 'Derivatives and Limits',
             thumbnail: 'bg-[#B9FF66]'
         },
-        { 
-            id: 2, 
-            title: 'Biology & Life Sciences', 
-            category: 'Science', 
-            icon: Dna, 
-            progress: 82, 
+        {
+            id: 2,
+            title: 'Biology & Life Sciences',
+            category: 'Science',
+            icon: Dna,
+            progress: 82,
             instructor: 'Prof. Michael Chen',
             students: 189,
             rating: 4.9,
@@ -40,12 +40,12 @@ const MyCourses = () => {
             nextLesson: 'Cell Structure',
             thumbnail: 'bg-[#191A23]'
         },
-        { 
-            id: 3, 
-            title: 'Spanish for Beginners', 
-            category: 'Language', 
-            icon: Globe2, 
-            progress: 45, 
+        {
+            id: 3,
+            title: 'Spanish for Beginners',
+            category: 'Language',
+            icon: Globe2,
+            progress: 45,
             instructor: 'Ms. Emma Wilson',
             students: 156,
             rating: 4.7,
@@ -54,12 +54,12 @@ const MyCourses = () => {
             nextLesson: 'Basic Conversations',
             thumbnail: 'bg-[#F3F3F3]'
         },
-        { 
-            id: 4, 
-            title: 'Web Development Bootcamp', 
-            category: 'Technology', 
-            icon: Laptop, 
-            progress: 34, 
+        {
+            id: 4,
+            title: 'Web Development Bootcamp',
+            category: 'Technology',
+            icon: Laptop,
+            progress: 34,
             instructor: 'John Smith',
             students: 312,
             rating: 4.9,
@@ -68,12 +68,12 @@ const MyCourses = () => {
             nextLesson: 'React Fundamentals',
             thumbnail: 'bg-[#B9FF66]'
         },
-        { 
-            id: 5, 
-            title: 'Digital Art Masterclass', 
-            category: 'Arts', 
-            icon: Palette, 
-            progress: 56, 
+        {
+            id: 5,
+            title: 'Digital Art Masterclass',
+            category: 'Arts',
+            icon: Palette,
+            progress: 56,
             instructor: 'Lisa Anderson',
             students: 98,
             rating: 4.8,
@@ -82,12 +82,12 @@ const MyCourses = () => {
             nextLesson: 'Color Theory',
             thumbnail: 'bg-[#191A23]'
         },
-        { 
-            id: 6, 
-            title: 'World History', 
-            category: 'History', 
-            icon: Hourglass, 
-            progress: 91, 
+        {
+            id: 6,
+            title: 'World History',
+            category: 'History',
+            icon: Hourglass,
+            progress: 91,
             instructor: 'Dr. Robert Lee',
             students: 145,
             rating: 4.6,
@@ -100,7 +100,7 @@ const MyCourses = () => {
 
     const filteredCourses = courses.filter(course => {
         const matchesSearch = course.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                            course.instructor.toLowerCase().includes(searchQuery.toLowerCase());
+            course.instructor.toLowerCase().includes(searchQuery.toLowerCase());
         const matchesCategory = selectedCategory === 'All' || course.category === selectedCategory;
         return matchesSearch && matchesCategory;
     });
@@ -146,11 +146,10 @@ const MyCourses = () => {
                                     <button
                                         key={category}
                                         onClick={() => setSelectedCategory(category)}
-                                        className={`px-3 py-1.5 rounded-lg font-medium text-xs whitespace-nowrap transition-all ${
-                                            selectedCategory === category
+                                        className={`px-3 py-1.5 rounded-lg font-medium text-xs whitespace-nowrap transition-all ${selectedCategory === category
                                                 ? 'bg-[#B9FF66] text-[#191A23]'
                                                 : 'bg-[#F3F3F3] text-gray-600 hover:bg-gray-200'
-                                        }`}
+                                            }`}
                                     >
                                         {category}
                                     </button>
@@ -199,10 +198,16 @@ const MyCourses = () => {
                             <motion.div
                                 key={course.id}
                                 initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.5, delay: 0.3 + idx * 0.1 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ duration: 0.5, delay: idx * 0.1, ease: "easeOut" }}
+                                whileHover={{
+                                    y: -4,
+                                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
+                                    transition: { duration: 0.2 }
+                                }}
                                 onClick={() => navigate(`/student/courses/${course.id}`)}
-                                className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all group cursor-pointer w-full"
+                                className="bg-white rounded-xl overflow-hidden shadow-sm group cursor-pointer w-full"
                             >
                                 {/* Thumbnail */}
                                 <div className={`h-40 ${course.thumbnail} relative overflow-hidden`}>
@@ -210,9 +215,8 @@ const MyCourses = () => {
                                         {course.progress}%
                                     </div>
                                     <div className="absolute bottom-4 left-4">
-                                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-sm ${
-                                            course.thumbnail === 'bg-[#191A23]' ? 'bg-[#B9FF66]' : 'bg-white'
-                                        }`}>
+                                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-sm ${course.thumbnail === 'bg-[#191A23]' ? 'bg-[#B9FF66]' : 'bg-white'
+                                            }`}>
                                             <Icon className="w-6 h-6 text-[#191A23]" />
                                         </div>
                                     </div>
@@ -250,7 +254,7 @@ const MyCourses = () => {
                                             <span className="text-xs font-bold text-[#191A23]">{course.progress}%</span>
                                         </div>
                                         <div className="w-full h-2 bg-[#F3F3F3] rounded-full overflow-hidden">
-                                            <div 
+                                            <div
                                                 className="h-full bg-[#B9FF66] transition-all duration-500"
                                                 style={{ width: `${course.progress}%` }}
                                             />

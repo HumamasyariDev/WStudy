@@ -68,7 +68,8 @@ const Certificates = () => {
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
                 >
                     <h1 className="text-3xl font-bold text-[#191A23] font-geist mb-2">My Certificates</h1>
@@ -83,7 +84,8 @@ const Certificates = () => {
                             <motion.div
                                 key={idx}
                                 initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: 0.1 + idx * 0.05 }}
                                 className="bg-white rounded-xl p-4 shadow-sm"
                             >
@@ -109,53 +111,50 @@ const Certificates = () => {
                             <motion.div
                                 key={cert.id}
                                 initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, margin: "-50px" }}
                                 transition={{ duration: 0.5, delay: 0.2 + idx * 0.1 }}
-                                className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all group cursor-pointer"
+                                whileHover={{
+                                    y: -5,
+                                    boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
+                                }}
+                                className="bg-white rounded-xl overflow-hidden shadow-sm group cursor-pointer"
                                 onClick={() => setSelectedCertificate(cert.id)}
                             >
                                 {/* Certificate Header */}
                                 <div className={`relative h-48 ${cert.color} p-6 overflow-hidden`}>
                                     {/* Decorative Elements */}
-                                    <div className={`absolute top-0 right-0 w-32 h-32 rounded-full -translate-y-16 translate-x-16 ${
-                                        cert.color === 'bg-[#191A23]' ? 'bg-[#B9FF66]/10' : 'bg-[#191A23]/10'
-                                    }`}></div>
-                                    <div className={`absolute bottom-0 left-0 w-24 h-24 rounded-full translate-y-12 -translate-x-12 ${
-                                        cert.color === 'bg-[#191A23]' ? 'bg-[#B9FF66]/10' : 'bg-[#191A23]/10'
-                                    }`}></div>
-                                    
+                                    <div className={`absolute top-0 right-0 w-32 h-32 rounded-full -translate-y-16 translate-x-16 ${cert.color === 'bg-[#191A23]' ? 'bg-[#B9FF66]/10' : 'bg-[#191A23]/10'
+                                        }`}></div>
+                                    <div className={`absolute bottom-0 left-0 w-24 h-24 rounded-full translate-y-12 -translate-x-12 ${cert.color === 'bg-[#191A23]' ? 'bg-[#B9FF66]/10' : 'bg-[#191A23]/10'
+                                        }`}></div>
+
                                     <div className="relative z-10 h-full flex flex-col justify-between">
                                         <div className="flex items-start justify-between">
-                                            <div className={`w-16 h-16 rounded-xl flex items-center justify-center border-2 ${
-                                                cert.color === 'bg-[#191A23]' 
-                                                    ? 'bg-[#B9FF66]/20 border-[#B9FF66]/30' 
-                                                    : cert.color === 'bg-[#F3F3F3]'
-                                                    ? 'bg-white border-gray-300'
-                                                    : 'bg-[#191A23]/20 border-[#191A23]/30'
-                                            }`}>
-                                                <Icon className={`w-8 h-8 ${
-                                                    cert.color === 'bg-[#191A23]' ? 'text-[#B9FF66]' : 'text-[#191A23]'
-                                                }`} />
-                                            </div>
-                                            <div className={`px-3 py-1 rounded-full border ${
-                                                cert.color === 'bg-[#191A23]'
+                                            <div className={`w-16 h-16 rounded-xl flex items-center justify-center border-2 ${cert.color === 'bg-[#191A23]'
                                                     ? 'bg-[#B9FF66]/20 border-[#B9FF66]/30'
                                                     : cert.color === 'bg-[#F3F3F3]'
-                                                    ? 'bg-white border-gray-300'
-                                                    : 'bg-[#191A23]/20 border-[#191A23]/30'
-                                            }`}>
-                                                <p className={`text-sm font-bold ${
-                                                    cert.color === 'bg-[#191A23]' ? 'text-[#B9FF66]' : 'text-[#191A23]'
-                                                }`}>{cert.score}%</p>
+                                                        ? 'bg-white border-gray-300'
+                                                        : 'bg-[#191A23]/20 border-[#191A23]/30'
+                                                }`}>
+                                                <Icon className={`w-8 h-8 ${cert.color === 'bg-[#191A23]' ? 'text-[#B9FF66]' : 'text-[#191A23]'
+                                                    }`} />
+                                            </div>
+                                            <div className={`px-3 py-1 rounded-full border ${cert.color === 'bg-[#191A23]'
+                                                    ? 'bg-[#B9FF66]/20 border-[#B9FF66]/30'
+                                                    : cert.color === 'bg-[#F3F3F3]'
+                                                        ? 'bg-white border-gray-300'
+                                                        : 'bg-[#191A23]/20 border-[#191A23]/30'
+                                                }`}>
+                                                <p className={`text-sm font-bold ${cert.color === 'bg-[#191A23]' ? 'text-[#B9FF66]' : 'text-[#191A23]'
+                                                    }`}>{cert.score}%</p>
                                             </div>
                                         </div>
                                         <div>
-                                            <h3 className={`text-2xl font-bold mb-1 ${
-                                                cert.color === 'bg-[#191A23]' ? 'text-white' : 'text-[#191A23]'
-                                            }`}>{cert.title}</h3>
-                                            <p className={`text-sm ${
-                                                cert.color === 'bg-[#191A23]' ? 'text-gray-300' : 'text-gray-600'
-                                            }`}>{cert.course}</p>
+                                            <h3 className={`text-2xl font-bold mb-1 ${cert.color === 'bg-[#191A23]' ? 'text-white' : 'text-[#191A23]'
+                                                }`}>{cert.title}</h3>
+                                            <p className={`text-sm ${cert.color === 'bg-[#191A23]' ? 'text-gray-300' : 'text-gray-600'
+                                                }`}>{cert.course}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -187,7 +186,7 @@ const Certificates = () => {
                                         <button className="px-4 py-3 bg-[#F3F3F3] text-[#191A23] rounded-xl font-semibold text-sm hover:bg-gray-200 transition-colors">
                                             <Share2 size={16} />
                                         </button>
-                                        <button 
+                                        <button
                                             onClick={() => navigate(`/student/certificate/${cert.id}`)}
                                             className="px-4 py-3 bg-[#F3F3F3] text-[#191A23] rounded-xl font-semibold text-sm hover:bg-gray-200 transition-colors"
                                         >
@@ -203,14 +202,15 @@ const Certificates = () => {
                 {/* Achievement Showcase */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.6 }}
                     className="bg-gradient-to-r from-[#191A23] to-[#2a2b3a] rounded-xl p-8 relative overflow-hidden"
                 >
                     {/* Decorative circles */}
                     <div className="absolute top-0 right-0 w-64 h-64 bg-[#B9FF66] rounded-full opacity-10 blur-3xl"></div>
                     <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#B9FF66] rounded-full opacity-10 blur-3xl"></div>
-                    
+
                     <div className="relative z-10 text-center">
                         <Trophy className="w-16 h-16 text-[#B9FF66] mx-auto mb-4" />
                         <h2 className="text-2xl font-bold text-white mb-2 font-geist">Keep Learning!</h2>
@@ -225,7 +225,8 @@ const Certificates = () => {
                 {certificates.length === 0 && (
                     <motion.div
                         initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
                         className="bg-white rounded-xl p-12 text-center shadow-sm"
                     >
                         <Award className="w-16 h-16 text-gray-300 mx-auto mb-4" />

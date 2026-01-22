@@ -28,13 +28,14 @@ const TeacherDashboard = () => {
                 {/* Welcome Card */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.5 }}
                     className="relative bg-gradient-to-r from-[#191A23] to-[#2a2b3a] rounded-2xl p-5 md:p-8 overflow-hidden"
                 >
                     <div className="absolute top-0 right-0 w-64 h-64 bg-[#B9FF66] rounded-full opacity-10 blur-3xl"></div>
                     <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#B9FF66] rounded-full opacity-10 blur-3xl"></div>
-                    
+
                     <div className="relative z-10">
                         <p className="text-[#B9FF66] text-xs md:text-sm font-semibold mb-1 md:mb-2">Welcome back,</p>
                         <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-1 md:mb-2 font-geist">
@@ -59,9 +60,14 @@ const TeacherDashboard = () => {
                             <motion.div
                                 key={idx}
                                 initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: 0.1 + idx * 0.05 }}
-                                className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all"
+                                whileHover={{
+                                    y: -5,
+                                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
+                                }}
+                                className="bg-white rounded-xl p-4 shadow-sm"
                             >
                                 <div className="flex items-center gap-4">
                                     <div className="w-12 h-12 bg-[#F3F3F3] rounded-xl flex items-center justify-center flex-shrink-0">
@@ -98,9 +104,14 @@ const TeacherDashboard = () => {
                             <motion.div
                                 key={course.id}
                                 initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: 0.3 + idx * 0.1 }}
-                                className="bg-white rounded-xl p-5 shadow-sm hover:shadow-md transition-all"
+                                whileHover={{
+                                    y: -5,
+                                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)"
+                                }}
+                                className="bg-white rounded-xl p-5 shadow-sm"
                             >
                                 <h3 className="font-bold text-lg text-[#191A23] mb-3">{course.title}</h3>
                                 <div className="space-y-2 mb-4">
@@ -135,7 +146,8 @@ const TeacherDashboard = () => {
                 {/* Quick Actions */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.5, delay: 0.6 }}
                     className="bg-white rounded-xl p-6 shadow-sm"
                 >
