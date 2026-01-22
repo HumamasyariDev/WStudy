@@ -29,7 +29,7 @@ const Features = () => {
                     </p>
                 </motion.div>
 
-                <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 pb-4 md:pb-0 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0">
+                <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 pb-4 md:pb-1 pt-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible md:snap-none">
                     {features.map((feature, idx) => {
                         const Icon = feature.icon;
                         return (
