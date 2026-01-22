@@ -1,5 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
-import Login from './pages/Login';
+import LandingPage from './pages/landing-page/LandingPage';
+import LoginPage from './pages/auth/LoginPage';
+import SignUpPage from './pages/auth/SignUpPage';
 import TeacherDashboard from './pages/teacher/Dashboard';
 import StudentDashboard from './pages/student/Dashboard';
 import AdminDashboard from './pages/admin/Dashboard';
@@ -8,11 +10,19 @@ import App from './App';
 export const router = createBrowserRouter([
     {
         path: '/',
-        element: <App />, // Acts as layout if needed, or just redirect
+        element: <App />,
         children: [
             {
                 path: '/',
-                element: <Login />
+                element: <LandingPage />
+            },
+            {
+                path: '/login',
+                element: <LoginPage />
+            },
+            {
+                path: '/signup',
+                element: <SignUpPage />
             },
             {
                 path: '/teacher/*',

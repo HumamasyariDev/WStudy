@@ -1,4 +1,3 @@
-import React from 'react';
 import { motion } from 'framer-motion';
 
 const WelcomeBanner = ({ name, progress = 75 }: { name: string, progress?: number }) => {

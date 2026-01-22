@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useCourseStore } from '../../store/useCourseStore';
 import { Button } from '../ui/Button';
-import { Card } from '../ui/Card';
 import { Comment } from '../../types';
 import { MessageSquare, Send } from 'lucide-react';
 
