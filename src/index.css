@@ -1,0 +1,71 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-geist: 'Inter', sans-serif;
+  --font-plus-jakarta: 'Inter', sans-serif;
+  --font-lexend: 'Inter', sans-serif;
+
+  --color-primary-bg: #FFFFFF;
+  /* White background for Positivus usually */
+  --color-positivus-brand: #B9FF66;
+  /* The Lime Green */
+  --color-positivus-dark: #191A23;
+  /* The Dark Black */
+  --color-positivus-gray: #F3F3F3;
+  /* The Light Gray */
+
+  --color-primary-brand: #B9FF66;
+  /* Updating alias */
+  --color-deep-accent: #191A23;
+  /* Updating alias */
+}
+
+:root {
+  --background: #FFFFFF;
+  --foreground: #191A23;
+}
+
+:root.dark {
+  --background: #191A23;
+  --foreground: #FFFFFF;
+  --color-primary-brand: #B9FF66;
+}
+
+:root {
+  --background: var(--color-primary-bg);
+  --foreground: var(--color-deep-accent);
+}
+
+:root.dark {
+  --background: #0f172a;
+  /* Dark slate */
+  --foreground: #f8fafc;
+  /* Light slate */
+  --color-primary-brand: #38bdf8;
+  /* Light blue for dark mode */
+}
+
+body {
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-plus-jakarta);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-lexend);
+}
+
+/* Custom Utilities for Bento Grid */
+.bento-card {
+  @apply bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300;
+}
