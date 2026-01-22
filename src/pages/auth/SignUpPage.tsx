@@ -66,7 +66,7 @@ const SignUpPage = () => {
     };
 
     return (
-        <div className="min-h-screen bg-white flex items-center justify-center p-4 relative overflow-hidden">
+        <div className="min-h-screen bg-white flex items-center justify-center p-4 pt-24 md:p-4 relative overflow-hidden">
             {/* Background dots pattern */}
             <div
                 className="absolute inset-0 opacity-30"
@@ -78,7 +78,7 @@ const SignUpPage = () => {
             {/* Back to Home Button */}
             <Link
                 to="/"
-                className="absolute top-6 left-6 z-20 flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:text-[#191A23] hover:border-[#B9FF66] hover:bg-[#B9FF66]/10 transition-all duration-200 group"
+                className="absolute top-4 left-4 md:top-6 md:left-6 z-20 flex items-center gap-2 px-4 py-2 bg-white/80 backdrop-blur-sm border border-gray-200 rounded-lg text-sm font-medium text-gray-600 hover:text-[#191A23] hover:border-[#B9FF66] hover:bg-[#B9FF66]/10 transition-all duration-200 group"
             >
                 <ArrowLeft size={16} className="group-hover:-translate-x-1 transition-transform" />
                 Back to Home
