@@ -6,7 +6,7 @@ import { Award, Download, Share2, Eye, Calendar, CheckCircle, Trophy, Star, Meda
 
 const Certificates = () => {
     const navigate = useNavigate();
-    const [selectedCertificate, setSelectedCertificate] = useState<number | null>(null);
+    const [, setSelectedCertificate] = useState<number | null>(null);
 
     const certificates = [
         {
@@ -132,19 +132,19 @@ const Certificates = () => {
                                     <div className="relative z-10 h-full flex flex-col justify-between">
                                         <div className="flex items-start justify-between">
                                             <div className={`w-16 h-16 rounded-xl flex items-center justify-center border-2 ${cert.color === 'bg-[#191A23]'
-                                                    ? 'bg-[#B9FF66]/20 border-[#B9FF66]/30'
-                                                    : cert.color === 'bg-[#F3F3F3]'
-                                                        ? 'bg-white border-gray-300'
-                                                        : 'bg-[#191A23]/20 border-[#191A23]/30'
+                                                ? 'bg-[#B9FF66]/20 border-[#B9FF66]/30'
+                                                : cert.color === 'bg-[#F3F3F3]'
+                                                    ? 'bg-white border-gray-300'
+                                                    : 'bg-[#191A23]/20 border-[#191A23]/30'
                                                 }`}>
                                                 <Icon className={`w-8 h-8 ${cert.color === 'bg-[#191A23]' ? 'text-[#B9FF66]' : 'text-[#191A23]'
                                                     }`} />
                                             </div>
                                             <div className={`px-3 py-1 rounded-full border ${cert.color === 'bg-[#191A23]'
-                                                    ? 'bg-[#B9FF66]/20 border-[#B9FF66]/30'
-                                                    : cert.color === 'bg-[#F3F3F3]'
-                                                        ? 'bg-white border-gray-300'
-                                                        : 'bg-[#191A23]/20 border-[#191A23]/30'
+                                                ? 'bg-[#B9FF66]/20 border-[#B9FF66]/30'
+                                                : cert.color === 'bg-[#F3F3F3]'
+                                                    ? 'bg-white border-gray-300'
+                                                    : 'bg-[#191A23]/20 border-[#191A23]/30'
                                                 }`}>
                                                 <p className={`text-sm font-bold ${cert.color === 'bg-[#191A23]' ? 'text-[#B9FF66]' : 'text-[#191A23]'
                                                     }`}>{cert.score}%</p>

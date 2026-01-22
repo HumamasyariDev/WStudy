@@ -1,9 +1,8 @@
 import { useCourseStore } from '../../store/useCourseStore';
 import { useQuizStore } from '../../store/useQuizStore';
-import { useAuthStore } from '../../store/useAuthStore';
 import { db } from '../../lib/db'; // Direct access for user count if needed
 import { Card } from '../../components/ui/Card';
-import { Sidebar } from '../../components/dashboard/Sidebar';
+import DashboardLayout from '../../components/layout/DashboardLayout';
 import { Users, BookOpen, CheckSquare, TrendingUp } from 'lucide-react';
 
 export default function AdminDashboard() {
@@ -22,9 +21,8 @@ export default function AdminDashboard() {
         : 0;
 
     return (
-        <div className="min-h-screen bg-background pl-64 transition-all">
-            <Sidebar />
-            <div className="p-8 max-w-7xl mx-auto space-y-8">
+        <DashboardLayout>
+            <div className="space-y-8">
                 <div>
                     <h1 className="text-3xl font-bold mb-2">Admin Dashboard</h1>
                     <p className="text-gray-500">System overview and performance metrics.</p>
@@ -76,7 +74,7 @@ export default function AdminDashboard() {
                     </Card>
                 </div>
             </div>
-        </div>
+        </DashboardLayout>
     );
 }
 

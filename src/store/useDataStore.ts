@@ -80,7 +80,7 @@ const INITIAL_COURSES: Course[] = [
 
 export const useDataStore = create<DataState>()(
     persist(
-        (set, get) => ({
+        (set) => ({
             courses: INITIAL_COURSES,
             progress: {},
             addCourse: (course) => set((state) => ({ courses: [...state.courses, course] })),

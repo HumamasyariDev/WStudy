@@ -1,4 +1,3 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Navbar = () => {
@@ -8,9 +7,9 @@ const Navbar = () => {
                 <div className="flex items-center justify-between h-20">
                     {/* Logo */}
                     <Link to="/" className="flex items-center">
-                        <img 
-                            src="/logo_transparent.png" 
-                            alt="WStudy" 
+                        <img
+                            src="/logo_transparent.png"
+                            alt="WStudy"
                             className="h-10 w-auto object-contain"
                         />
                     </Link>

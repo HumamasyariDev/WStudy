@@ -8,7 +8,7 @@ const StudentsManagement = () => {
     const navigate = useNavigate();
     const [searchQuery, setSearchQuery] = useState('');
     const [selectedCourse, setSelectedCourse] = useState('all');
-    const [selectedStatus, setSelectedStatus] = useState('all');
+    const [selectedStatus] = useState('all');
 
     const students = [
         { id: 1, name: 'Alice Johnson', email: 'alice@example.com', course: 'Advanced Calculus', progress: 85, quizAvg: 92, lastActive: '2 hours ago', status: 'active' },

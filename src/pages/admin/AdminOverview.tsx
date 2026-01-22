@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../../components/layout/DashboardLayout';
-import { Users, BookOpen, TrendingUp, Award, ShieldCheck, Eye, UserPlus, FileText } from 'lucide-react';
+import { Users, BookOpen, TrendingUp, Award, ShieldCheck, Eye } from 'lucide-react';
 
 const AdminOverview = () => {
     const navigate = useNavigate();

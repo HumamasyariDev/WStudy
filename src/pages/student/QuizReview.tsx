@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import DashboardLayout from '../../components/layout/DashboardLayout';
-import { ArrowLeft, CheckCircle, XCircle, Award, Clock, Target, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react';
+import { ArrowLeft, CheckCircle, XCircle, Award, Target, TrendingUp, ChevronDown, ChevronUp } from 'lucide-react';
 
 const QuizReview = () => {
     const navigate = useNavigate();
@@ -93,13 +93,6 @@ const QuizReview = () => {
         ]
     };
 
-    const getScoreColor = (score: number) => {
-        if (score >= 90) return 'text-green-600';
-        if (score >= 75) return 'text-blue-600';
-        if (score >= 60) return 'text-yellow-600';
-        return 'text-red-600';
-    };
-
     const getScoreBgColor = () => {
         return 'from-[#191A23] to-[#2a2b3a]';
     };
@@ -131,7 +124,7 @@ const QuizReview = () => {
                     {/* Decorative circles */}
                     <div className="absolute top-0 right-0 w-64 h-64 bg-[#B9FF66] rounded-full opacity-10 blur-3xl"></div>
                     <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#B9FF66] rounded-full opacity-10 blur-3xl"></div>
-                    
+
                     <div className="relative z-10 text-center">
                         <Award className="w-16 h-16 text-[#B9FF66] mx-auto mb-4" />
                         <h2 className="text-4xl md:text-5xl font-bold text-white mb-2">{quizResult.score}%</h2>
@@ -189,7 +182,7 @@ const QuizReview = () => {
                 {/* Question Review */}
                 <div className="space-y-4">
                     <h2 className="text-xl font-bold text-[#191A23] font-geist">Answer Review</h2>
-                    
+
                     {quizResult.questions.map((q, idx) => (
                         <motion.div
                             key={q.id}
@@ -204,9 +197,8 @@ const QuizReview = () => {
                                 className="w-full p-6 flex items-start gap-4 hover:bg-[#F3F3F3] transition-colors"
                             >
                                 {/* Status Icon */}
-                                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${
-                                    q.isCorrect ? 'bg-green-100' : 'bg-red-100'
-                                }`}>
+                                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 ${q.isCorrect ? 'bg-green-100' : 'bg-red-100'
+                                    }`}>
                                     {q.isCorrect ? (
                                         <CheckCircle className="w-6 h-6 text-green-600" />
                                     ) : (
@@ -218,9 +210,8 @@ const QuizReview = () => {
                                 <div className="flex-1 text-left">
                                     <div className="flex items-center gap-2 mb-2">
                                         <span className="text-sm font-semibold text-gray-500">Question {idx + 1}</span>
-                                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${
-                                            q.isCorrect ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
-                                        }`}>
+                                        <span className={`text-xs font-semibold px-2 py-0.5 rounded-full ${q.isCorrect ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'
+                                            }`}>
                                             {q.isCorrect ? 'Correct' : 'Incorrect'}
                                         </span>
                                     </div>
@@ -248,21 +239,19 @@ const QuizReview = () => {
                                             return (
                                                 <div
                                                     key={optionIdx}
-                                                    className={`p-4 rounded-xl border-2 flex items-center gap-4 ${
-                                                        isCorrectAnswer
+                                                    className={`p-4 rounded-xl border-2 flex items-center gap-4 ${isCorrectAnswer
                                                             ? 'border-green-500 bg-green-50'
                                                             : isUserAnswer && !q.isCorrect
-                                                            ? 'border-red-500 bg-red-50'
-                                                            : 'border-gray-200 bg-white'
-                                                    }`}
+                                                                ? 'border-red-500 bg-red-50'
+                                                                : 'border-gray-200 bg-white'
+                                                        }`}
                                                 >
-                                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 ${
-                                                        isCorrectAnswer
+                                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 ${isCorrectAnswer
                                                             ? 'bg-green-500 text-white'
                                                             : isUserAnswer && !q.isCorrect
-                                                            ? 'bg-red-500 text-white'
-                                                            : 'bg-[#F3F3F3] text-gray-600'
-                                                    }`}>
+                                                                ? 'bg-red-500 text-white'
+                                                                : 'bg-[#F3F3F3] text-gray-600'
+                                                        }`}>
                                                         {optionLabel}
                                                     </div>
                                                     <span className="flex-1 font-medium">{option}</span>

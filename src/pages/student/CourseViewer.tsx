@@ -33,27 +33,27 @@ export default function CourseViewer() {
                 <Card className="flex-1 flex flex-col p-6 overflow-y-auto">
                     <div className="mb-6">
                         <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
-                            {activeModule?.type === 'video' ? <PlayCircle /> : <FileText />}
+                            {activeModule?.materials?.[0]?.type === 'video' ? <PlayCircle /> : <FileText />}
                             {activeModule?.title}
                         </h2>
 
                         <div className="bg-gray-100 rounded-2xl min-h-[300px] flex items-center justify-center mb-6">
-                            {activeModule ? (
+                            {activeModule?.materials?.[0] ? (
                                 <div className="text-center p-8">
-                                    <p className="text-lg text-gray-600 mb-4">{activeModule.content}</p>
+                                    <p className="text-lg text-gray-600 mb-4">{activeModule.materials[0].content}</p>
                                     <p className="text-sm text-gray-400 italic">(In a real app, this would render video player or PDF viewer)</p>
                                 </div>
                             ) : (
-                                <p>No module selected</p>
+                                <p>No material in this module</p>
                             )}
                         </div>
                     </div>
 
-                    {activeModule && (
+                    {activeModule?.materials?.[0] && (
                         <CommentSection
                             courseId={course.id}
                             moduleId={activeModule.id}
-                            comments={activeModule.comments}
+                            comments={activeModule.materials[0].comments}
                         />
                     )}
                 </Card>

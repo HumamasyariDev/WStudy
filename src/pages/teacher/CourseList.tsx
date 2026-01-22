@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useCourseStore } from '../../store/useCourseStore';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
-import { Plus, Play, FileText, Video } from 'lucide-react';
+import { Plus, FileText, Users } from 'lucide-react';
 import { Course } from '../../types';
 
 export default function CourseList() {

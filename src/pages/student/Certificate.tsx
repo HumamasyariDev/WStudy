@@ -4,7 +4,6 @@ import { useAuthStore } from '../../store/useAuthStore';
 import { useQuizStore } from '../../store/useQuizStore';
 import { useCourseStore } from '../../store/useCourseStore';
 import { Button } from '../../components/ui/Button';
-import { Card } from '../../components/ui/Card';
 import { Download, ArrowLeft } from 'lucide-react';
 import html2canvas from 'html2canvas';
 import gsap from 'gsap';

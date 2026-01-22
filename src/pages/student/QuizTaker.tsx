@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuizStore } from '../../store/useQuizStore';
 import { useAuthStore } from '../../store/useAuthStore';
@@ -126,8 +126,8 @@ export default function QuizTaker() {
                                             key={idx}
                                             onClick={() => handleOptionSelect(idx)}
                                             className={`w-full text-left p-4 rounded-xl border-2 transition-all ${answers[currentQuestion.id] === idx
-                                                    ? 'border-brand bg-brand/5 text-brand font-bold shadow-sm'
-                                                    : 'border-gray-100 hover:border-brand/30 hover:bg-gray-50'
+                                                ? 'border-brand bg-brand/5 text-brand font-bold shadow-sm'
+                                                : 'border-gray-100 hover:border-brand/30 hover:bg-gray-50'
                                                 }`}
                                         >
                                             <span className="mr-3 inline-block w-6 h-6 rounded-full border border-current text-center text-xs leading-5">

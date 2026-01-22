@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
+
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import Card from '../../components/ui/Card';
-import { useAuthStore } from '../../store/useAuthStore';
+
 import { Users, BookOpen, TrendingUp, Settings, ShieldCheck } from 'lucide-react';
-import { motion } from 'framer-motion';
 
 const AdminDashboard = () => {
-    const { user } = useAuthStore();
+    // const { user } = useAuthStore();
 
     return (
         <DashboardLayout>

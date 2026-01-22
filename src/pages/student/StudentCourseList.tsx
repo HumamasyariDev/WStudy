@@ -3,7 +3,6 @@ import { useCourseStore } from '../../store/useCourseStore';
 import { useQuizStore } from '../../store/useQuizStore';
 import { Card } from '../../components/ui/Card';
 import { Button } from '../../components/ui/Button';
-import { Play } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export default function StudentCourseList() {
