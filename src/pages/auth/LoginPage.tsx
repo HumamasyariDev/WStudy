@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { User, Lock, GraduationCap, Users, Shield, ArrowLeft } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuthStore, UserRole } from '../../store/useAuthStore';
+import SuccessModal from '../../components/ui/SuccessModal';
 
 const LoginPage = () => {
     const navigate = useNavigate();
@@ -11,6 +12,7 @@ const LoginPage = () => {
     const [selectedRole, setSelectedRole] = useState<UserRole | null>(null);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const roles: Array<{
         id: UserRole;
@@ -50,6 +52,13 @@ const LoginPage = () => {
         e.preventDefault();
         if (selectedRole) {
             login(selectedRole);
+            setShowSuccessModal(true);
+        }
+    };
+
+    const handleSuccessModalClose = () => {
+        setShowSuccessModal(false);
+        if (selectedRole) {
             navigate(`/${selectedRole}/dashboard`);
         }
     };
@@ -236,6 +245,14 @@ const LoginPage = () => {
                     </motion.div>
                 </div>
             </div>
+
+            {/* Success Modal */}
+            <SuccessModal
+                isOpen={showSuccessModal}
+                onClose={handleSuccessModalClose}
+                title="Login Berhasil!"
+                message={`Selamat datang! Anda berhasil login sebagai ${selectedRole === 'student' ? 'Student' : selectedRole === 'teacher' ? 'Teacher' : 'Admin'}.`}
+            />
         </div>
     );
 };

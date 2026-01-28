@@ -13,7 +13,7 @@ const categories = [
 
 const Categories = () => {
     return (
-        <section id="categories" className="py-16 md:py-24 bg-white">
+        <section id="categories" className="pt-4 md:pt-6 pb-8 md:pb-12 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <motion.div
                     className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8 mb-12 md:mb-16"

@@ -34,12 +34,13 @@ const Hero = () => {
     // Scroll parallax setup
     const { scrollY } = useScroll();
     const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-    const y2 = useTransform(scrollY, [0, 500], [0, -150]);
-    const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+    const y2 = useTransform(scrollY, [0, 500], [0, -50]);
+    // Faster fade out on mobile (300px) vs desktop (500px)
+    const opacity = useTransform(scrollY, [0, typeof window !== 'undefined' && window.innerWidth < 1024 ? 300 : 500], [1, 0]);
 
     return (
         <section
-            className="relative pt-24 pb-16 lg:pt-48 lg:pb-32 overflow-hidden bg-white min-h-[85vh] lg:min-h-[90vh] flex items-center"
+            className="relative pt-24 pb-8 lg:pt-48 lg:pb-12 overflow-hidden bg-white min-h-[70vh] lg:min-h-[90vh] flex items-center"
             onMouseMove={handleMouseMove}
         >
             {/* Dynamic Background */}
@@ -165,7 +166,7 @@ const Hero = () => {
             </div>
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-                <motion.div style={{ y: y1, opacity }}>
+                <motion.div className="lg:block" style={{ y: y1, opacity }}>
                     {/* Badge */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
@@ -237,13 +238,13 @@ const Hero = () => {
 
                 {/* Brand Logos Strip with simple float */}
                 <motion.div
-                    className="mt-16 md:mt-32 pt-8 md:pt-10 border-t border-[#191A23]/10"
+                    className="mt-4 md:mt-6 pt-4 md:pt-6 pb-8 md:pb-12 border-t border-[#191A23]/10"
                     style={{ y: y2 }}
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 0.6 }}
                     transition={{ duration: 1, delay: 0.8 }}
                 >
-                    <p className="text-gray-500 font-medium text-sm mb-8 uppercase tracking-widest">Trusted by leading institutions</p>
+                    <p className="text-gray-500 font-medium text-sm mb-4 md:mb-8 uppercase tracking-widest">Trusted by leading institutions</p>
                     <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
                         {['HARVARD', 'MIT', 'STANFORD', 'UDEMY', 'COURSERA', 'KHAN ACADEMY'].map((brand) => (
                             <motion.span

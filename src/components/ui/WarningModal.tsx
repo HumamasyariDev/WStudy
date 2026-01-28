@@ -7,9 +7,11 @@ interface WarningModalProps {
     title: string;
     message: string;
     buttonText?: string;
+    onConfirm?: () => void;
+    confirmText?: string;
 }
 
-const WarningModal = ({ isOpen, onClose, title, message, buttonText = 'Got it' }: WarningModalProps) => {
+const WarningModal = ({ isOpen, onClose, title, message, buttonText = 'Got it', onConfirm, confirmText = 'Confirm' }: WarningModalProps) => {
     return (
         <AnimatePresence>
             {isOpen && (
@@ -72,16 +74,39 @@ const WarningModal = ({ isOpen, onClose, title, message, buttonText = 'Got it' }
                                     {message}
                                 </motion.p>
 
-                                {/* Button */}
-                                <motion.button
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 0.5 }}
-                                    onClick={onClose}
-                                    className="px-8 py-3 bg-amber-500 text-white rounded-xl font-semibold hover:bg-amber-600 transition-colors"
-                                >
-                                    {buttonText}
-                                </motion.button>
+                                {/* Buttons */}
+                                {onConfirm ? (
+                                    <div className="flex gap-3 justify-center">
+                                        <motion.button
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.5 }}
+                                            onClick={onClose}
+                                            className="px-6 py-3 bg-gray-200 text-gray-700 rounded-xl font-semibold hover:bg-gray-300 transition-colors"
+                                        >
+                                            Batal
+                                        </motion.button>
+                                        <motion.button
+                                            initial={{ opacity: 0, y: 10 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{ delay: 0.5 }}
+                                            onClick={onConfirm}
+                                            className="px-6 py-3 bg-red-500 text-white rounded-xl font-semibold hover:bg-red-600 transition-colors"
+                                        >
+                                            {confirmText}
+                                        </motion.button>
+                                    </div>
+                                ) : (
+                                    <motion.button
+                                        initial={{ opacity: 0, y: 10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        transition={{ delay: 0.5 }}
+                                        onClick={onClose}
+                                        className="px-8 py-3 bg-amber-500 text-white rounded-xl font-semibold hover:bg-amber-600 transition-colors"
+                                    >
+                                        {buttonText}
+                                    </motion.button>
+                                )}
                             </div>
 
                             {/* Decorative elements */}

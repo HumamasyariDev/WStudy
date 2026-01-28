@@ -4,6 +4,7 @@ import { useAuthStore } from '../../store/useAuthStore';
 import { LayoutDashboard, BookOpen, FileText, CheckCircle, Users, Settings, LogOut } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { cn } from '../../lib/utils';
+import WarningModal from '../ui/WarningModal';
 
 interface SidebarProps {
     isOpen: boolean;
@@ -14,6 +15,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
     const { user, logout } = useAuthStore();
     const location = useLocation();
     const [isMobile, setIsMobile] = React.useState(window.innerWidth < 768);
+    const [showLogoutModal, setShowLogoutModal] = React.useState(false);
 
     React.useEffect(() => {
         const handleResize = () => {
@@ -109,7 +111,7 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                         </div>
                     </div>
                     <button
-                        onClick={() => logout()}
+                        onClick={() => setShowLogoutModal(true)}
                         className="flex items-center justify-center gap-2 w-full px-4 py-3 bg-gray-100 text-gray-700 hover:bg-gray-200 rounded-xl transition-colors text-sm font-medium"
                     >
                         <LogOut size={18} />
@@ -117,6 +119,18 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
                     </button>
                 </div>
             </motion.aside>
+
+            {/* Logout Confirmation Modal */}
+            <WarningModal
+                isOpen={showLogoutModal}
+                onClose={() => setShowLogoutModal(false)}
+                onConfirm={() => {
+                    setShowLogoutModal(false);
+                    logout();
+                }}
+                title="Konfirmasi Logout"
+                message="Apakah Anda yakin ingin keluar dari akun Anda?"
+            />
         </>
     );
 };
