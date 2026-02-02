@@ -1,12 +1,10 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../../components/layout/DashboardLayout';
-import { Award, Download, Share2, Eye, Calendar, CheckCircle, Trophy, Star, Medal } from 'lucide-react';
+import { Award, Download, Share2, Calendar, CheckCircle, Trophy, Star, Medal } from 'lucide-react';
 
 const Certificates = () => {
     const navigate = useNavigate();
-    const [, setSelectedCertificate] = useState<number | null>(null);
 
     const certificates = [
         {
@@ -119,7 +117,7 @@ const Certificates = () => {
                                     boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
                                 }}
                                 className="bg-white rounded-xl overflow-hidden shadow-sm group cursor-pointer"
-                                onClick={() => setSelectedCertificate(cert.id)}
+                                onClick={() => navigate(`/student/certificate/${cert.id}`)}
                             >
                                 {/* Certificate Header */}
                                 <div className={`relative h-48 ${cert.color} p-6 overflow-hidden`}>
@@ -179,18 +177,24 @@ const Certificates = () => {
 
                                     {/* Actions */}
                                     <div className="flex gap-2 pt-2">
-                                        <button className="flex-1 bg-[#191A23] text-[#B9FF66] py-3 rounded-xl font-semibold text-sm hover:bg-[#2a2b3a] transition-colors flex items-center justify-center gap-2">
+                                        <button 
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                // Handle download
+                                            }}
+                                            className="flex-1 bg-[#191A23] text-[#B9FF66] py-3 rounded-xl font-semibold text-sm hover:bg-[#2a2b3a] transition-colors flex items-center justify-center gap-2"
+                                        >
                                             <Download size={16} />
                                             Download
                                         </button>
-                                        <button className="px-4 py-3 bg-[#F3F3F3] text-[#191A23] rounded-xl font-semibold text-sm hover:bg-gray-200 transition-colors">
-                                            <Share2 size={16} />
-                                        </button>
-                                        <button
-                                            onClick={() => navigate(`/student/certificate/${cert.id}`)}
+                                        <button 
+                                            onClick={(e) => {
+                                                e.stopPropagation();
+                                                // Handle share
+                                            }}
                                             className="px-4 py-3 bg-[#F3F3F3] text-[#191A23] rounded-xl font-semibold text-sm hover:bg-gray-200 transition-colors"
                                         >
-                                            <Eye size={16} />
+                                            <Share2 size={16} />
                                         </button>
                                     </div>
                                 </div>

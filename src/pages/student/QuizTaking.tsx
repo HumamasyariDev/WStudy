@@ -114,214 +114,315 @@ const QuizTaking = () => {
 
     return (
         <DashboardLayout>
-            <div className="space-y-4 overflow-x-hidden max-w-5xl mx-auto">
+            {/* Animated Background - Landing Page Style */}
+            <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+                <div className="absolute top-20 right-10 w-72 h-72 bg-[#B9FF66]/10 rounded-full blur-3xl animate-pulse"></div>
+                <div className="absolute bottom-20 left-10 w-96 h-96 bg-[#191A23]/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+                <div className="absolute top-1/3 right-1/3 w-80 h-80 bg-blue-500/5 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
+                {/* Subtle grid pattern */}
+                <div className="absolute inset-0 opacity-[0.02]" style={{ backgroundImage: 'radial-gradient(circle, #191A23 1px, transparent 1px)', backgroundSize: '50px 50px' }}></div>
+            </div>
+
+            <div className="relative z-10 max-w-7xl mx-auto px-4 py-6">
                 {/* Header with Timer */}
-                <div className="bg-white rounded-xl p-4 shadow-sm sticky top-0 z-10">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h1 className="text-lg md:text-xl font-bold text-[#191A23] font-geist">{quiz.title}</h1>
-                            <p className="text-sm text-gray-600">{quiz.course}</p>
+                <motion.div 
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                    className="bg-white/90 backdrop-blur-md rounded-[32px] p-6 md:p-8 shadow-xl border border-gray-200/50 mb-6"
+                >
+                    <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
+                        <div className="flex-1">
+                            <h1 className="text-2xl md:text-3xl font-bold text-[#191A23] font-geist mb-2">{quiz.title}</h1>
+                            <p className="text-base text-gray-600 flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 bg-[#B9FF66] rounded-full"></span>
+                                {quiz.course}
+                            </p>
                         </div>
                         <div className="flex items-center gap-4">
                             {/* Timer */}
-                            <div className={`flex items-center gap-2 px-4 py-2 rounded-lg ${
-                                timeLeft < 300 ? 'bg-red-50 text-red-600' : 'bg-[#F3F3F3] text-[#191A23]'
-                            }`}>
-                                <Clock className="w-5 h-5" />
-                                <span className="font-mono font-bold">{formatTime(timeLeft)}</span>
-                            </div>
+                            <motion.div 
+                                animate={timeLeft < 300 ? { scale: [1, 1.02, 1] } : {}}
+                                transition={{ duration: 1, repeat: timeLeft < 300 ? Infinity : 0 }}
+                                className={`relative flex items-center gap-3 px-6 py-3.5 rounded-[16px] transition-all ${
+                                    timeLeft < 300 
+                                        ? 'bg-red-50 border-2 border-red-500' 
+                                        : 'bg-gray-50 border-2 border-gray-200'
+                                }`}
+                            >
+                                {/* Icon with background */}
+                                <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                                    timeLeft < 300 ? 'bg-red-500' : 'bg-[#B9FF66]'
+                                }`}>
+                                    <Clock className={`w-5 h-5 ${timeLeft < 300 ? 'text-white' : 'text-[#191A23]'}`} />
+                                </div>
+                                
+                                {/* Timer info */}
+                                <div className="flex flex-col">
+                                    <span className={`text-xs font-medium ${timeLeft < 300 ? 'text-red-600' : 'text-gray-600'}`}>
+                                        Time Left
+                                    </span>
+                                    <span className={`font-mono font-bold text-xl leading-tight ${
+                                        timeLeft < 300 ? 'text-red-600' : 'text-[#191A23]'
+                                    }`}>
+                                        {formatTime(timeLeft)}
+                                    </span>
+                                </div>
+
+                                {/* Warning indicator for low time */}
+                                {timeLeft < 300 && (
+                                    <motion.div
+                                        animate={{ opacity: [0.5, 1, 0.5] }}
+                                        transition={{ duration: 1.5, repeat: Infinity }}
+                                        className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-white"
+                                    />
+                                )}
+                            </motion.div>
                         </div>
                     </div>
 
                     {/* Progress Bar */}
-                    <div className="mt-4">
-                        <div className="flex items-center justify-between mb-2">
-                            <span className="text-sm text-gray-600">
+                    <div className="mt-8">
+                        <div className="flex items-center justify-between mb-3">
+                            <span className="text-sm font-medium text-gray-600">
                                 Question {currentQuestion + 1} of {quiz.questions.length}
                             </span>
-                            <span className="text-sm font-semibold text-[#191A23]">
-                                {answeredCount}/{quiz.questions.length} answered
+                            <div className="flex items-center gap-2">
+                                <div className="w-2 h-2 bg-[#B9FF66] rounded-full animate-pulse"></div>
+                                <span className="text-sm font-bold text-[#191A23]">
+                                    {answeredCount}/{quiz.questions.length} answered
+                                </span>
+                            </div>
+                        </div>
+                        <div className="w-full h-2.5 bg-gray-200/50 rounded-full overflow-hidden backdrop-blur-sm">
+                            <motion.div 
+                                initial={{ width: 0 }}
+                                animate={{ width: `${progress}%` }}
+                                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                                className="h-full bg-gradient-to-r from-[#B9FF66] to-[#a3eb5b] rounded-full relative"
+                            >
+                                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/30 to-white/0 animate-shimmer"></div>
+                            </motion.div>
+                        </div>
+                    </div>
+                </motion.div>
+
+                {/* Main Content - Side by Side Layout */}
+                <div className="grid lg:grid-cols-[1fr_320px] gap-6">
+                    {/* Question Card */}
+                    <motion.div
+                        key={currentQuestion}
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                        className="bg-white/90 backdrop-blur-md rounded-[32px] p-8 md:p-12 shadow-xl border border-gray-200/50 hover:shadow-2xl transition-shadow duration-300"
+                    >
+                        {/* Question Number Badge */}
+                        <motion.div 
+                            initial={{ scale: 0.8, opacity: 0 }}
+                            animate={{ scale: 1, opacity: 1 }}
+                            transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
+                            className="inline-flex items-center gap-2 bg-[#B9FF66] px-5 py-2.5 rounded-[14px] mb-8 shadow-md shadow-[#B9FF66]/20"
+                        >
+                            <span className="text-sm font-bold text-[#191A23]">
+                                Question {currentQuestion + 1}
                             </span>
-                        </div>
-                        <div className="w-full h-2 bg-[#F3F3F3] rounded-full overflow-hidden">
-                            <div 
-                                className="h-full bg-[#B9FF66] transition-all duration-300"
-                                style={{ width: `${progress}%` }}
-                            />
-                        </div>
-                    </div>
-                </div>
+                        </motion.div>
 
-                {/* Question Card */}
-                <motion.div
-                    key={currentQuestion}
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className="bg-white rounded-xl p-6 md:p-8 shadow-sm"
-                >
-                    {/* Question Number Badge */}
-                    <div className="inline-flex items-center gap-2 bg-[#F3F3F3] px-3 py-1 rounded-full mb-4">
-                        <span className="text-sm font-semibold text-[#191A23]">
-                            Question {currentQuestion + 1}
-                        </span>
-                    </div>
+                        {/* Question Text */}
+                        <motion.h2 
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            className="text-2xl md:text-3xl font-bold text-[#191A23] mb-10 leading-tight font-geist"
+                        >
+                            {quiz.questions[currentQuestion].question}
+                        </motion.h2>
 
-                    {/* Question Text */}
-                    <h2 className="text-xl md:text-2xl font-bold text-[#191A23] mb-6">
-                        {quiz.questions[currentQuestion].question}
-                    </h2>
-
-                    {/* Answer Options */}
-                    <div className="space-y-3">
+                        {/* Answer Options */}
+                        <div className="space-y-3">
                         {quiz.questions[currentQuestion].options.map((option, idx) => {
                             const isSelected = answers[currentQuestion] === option;
                             const optionLabel = String.fromCharCode(65 + idx); // A, B, C, D
 
                             return (
-                                <button
+                                <motion.button
                                     key={idx}
+                                    initial={{ opacity: 0, x: -20 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    transition={{ delay: 0.3 + idx * 0.05 }}
                                     onClick={() => handleAnswerSelect(option)}
-                                    className={`w-full p-4 rounded-xl border-2 transition-all text-left flex items-center gap-4 ${
+                                    whileHover={{ scale: 1.01, x: 4 }}
+                                    whileTap={{ scale: 0.99 }}
+                                    className={`w-full p-5 rounded-[20px] border-2 transition-all duration-200 text-left flex items-center gap-4 ${
                                         isSelected
-                                            ? 'border-[#B9FF66] bg-[#B9FF66]/10'
-                                            : 'border-gray-200 hover:border-[#191A23] hover:bg-[#F3F3F3]'
+                                            ? 'border-[#B9FF66] bg-[#B9FF66]/10 shadow-lg shadow-[#B9FF66]/10'
+                                            : 'border-gray-200 hover:border-[#B9FF66]/50 hover:bg-gray-50 hover:shadow-md'
                                     }`}
                                 >
-                                    <div className={`w-8 h-8 rounded-full flex items-center justify-center font-bold flex-shrink-0 ${
-                                        isSelected
-                                            ? 'bg-[#B9FF66] text-[#191A23]'
-                                            : 'bg-[#F3F3F3] text-gray-600'
-                                    }`}>
+                                    <motion.div 
+                                        animate={isSelected ? { scale: [1, 1.1, 1] } : {}}
+                                        transition={{ duration: 0.3 }}
+                                        className={`w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0 transition-all ${
+                                            isSelected
+                                                ? 'bg-[#B9FF66] text-[#191A23] shadow-md'
+                                                : 'bg-gray-100 text-gray-600'
+                                        }`}
+                                    >
                                         {optionLabel}
-                                    </div>
-                                    <span className={`flex-1 ${isSelected ? 'font-semibold text-[#191A23]' : 'text-gray-700'}`}>
+                                    </motion.div>
+                                    <span className={`flex-1 text-base transition-all ${isSelected ? 'font-semibold text-[#191A23]' : 'text-gray-700'}`}>
                                         {option}
                                     </span>
                                     {isSelected && (
-                                        <CheckCircle2 className="w-5 h-5 text-[#B9FF66]" />
+                                        <motion.div
+                                            initial={{ scale: 0, rotate: -90 }}
+                                            animate={{ scale: 1, rotate: 0 }}
+                                            transition={{ type: "spring", stiffness: 200 }}
+                                        >
+                                            <CheckCircle2 className="w-6 h-6 text-[#B9FF66]" />
+                                        </motion.div>
                                     )}
-                                </button>
+                                </motion.button>
                             );
                         })}
-                    </div>
-                </motion.div>
+                        </div>
 
-                {/* Navigation */}
-                <div className="bg-white rounded-xl p-4 shadow-sm sticky bottom-0">
-                    <div className="flex items-center justify-between gap-4">
-                        <button
-                            onClick={() => setCurrentQuestion(Math.max(0, currentQuestion - 1))}
-                            disabled={currentQuestion === 0}
-                            className="flex items-center gap-2 px-4 py-2 bg-[#F3F3F3] text-[#191A23] rounded-lg font-semibold hover:bg-gray-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        {/* Navigation Buttons */}
+                        <motion.div 
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.5 }}
+                            className="flex items-center justify-between gap-4 mt-10 pt-8 border-t border-gray-200"
                         >
-                            <ChevronLeft className="w-5 h-5" />
-                            <span className="hidden sm:inline">Previous</span>
-                        </button>
+                            <button
+                                onClick={() => setCurrentQuestion(Math.max(0, currentQuestion - 1))}
+                                disabled={currentQuestion === 0}
+                                className="flex items-center gap-2 px-6 py-3.5 bg-gray-100 text-[#191A23] rounded-[14px] font-semibold hover:bg-gray-200 hover:shadow-md transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                                <ChevronLeft className="w-5 h-5" />
+                                <span className="hidden sm:inline">Previous</span>
+                            </button>
 
-                        <button
+                            <button
+                                onClick={() => setCurrentQuestion(Math.min(quiz.questions.length - 1, currentQuestion + 1))}
+                                disabled={currentQuestion === quiz.questions.length - 1}
+                                className="flex items-center gap-2 px-6 py-3.5 bg-[#B9FF66] text-[#191A23] rounded-[14px] font-bold hover:bg-[#a8ee55] hover:shadow-lg hover:shadow-[#B9FF66]/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                            >
+                                <span className="hidden sm:inline">Next</span>
+                                <ChevronRight className="w-5 h-5" />
+                            </button>
+                        </motion.div>
+                    </motion.div>
+
+                    {/* Sidebar - Question Navigator */}
+                    <motion.div 
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                        className="bg-white/90 backdrop-blur-md rounded-[32px] p-6 shadow-xl border border-gray-200/50 h-fit sticky top-24"
+                    >
+                        <div className="flex items-center gap-2 mb-5">
+                            <div className="w-1 h-6 bg-[#B9FF66] rounded-full"></div>
+                            <h3 className="font-bold text-lg text-[#191A23] font-geist">Questions</h3>
+                        </div>
+                        <div className="grid grid-cols-5 gap-2 mb-6">
+                            {quiz.questions.map((_, idx) => {
+                                const isAnswered = answers[idx] !== undefined;
+                                const isCurrent = idx === currentQuestion;
+
+                                return (
+                                    <motion.button
+                                        key={idx}
+                                        onClick={() => setCurrentQuestion(idx)}
+                                        whileHover={{ scale: 1.1, y: -2 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        className={`aspect-square rounded-[12px] font-bold text-sm transition-all ${
+                                            isCurrent
+                                                ? 'bg-[#191A23] text-[#B9FF66] ring-2 ring-[#B9FF66] shadow-lg'
+                                                : isAnswered
+                                                ? 'bg-[#B9FF66] text-[#191A23] shadow-md'
+                                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:shadow-md'
+                                        }`}
+                                    >
+                                        {idx + 1}
+                                    </motion.button>
+                                );
+                            })}
+                        </div>
+                        
+                        {/* Legend */}
+                        <div className="space-y-2 text-sm mb-6 pb-6 border-b border-gray-200">
+                            <div className="flex items-center gap-2">
+                                <div className="w-5 h-5 bg-[#B9FF66] rounded-[8px]"></div>
+                                <span className="text-gray-600">Answered</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-5 h-5 bg-[#F3F3F3] rounded-[8px]"></div>
+                                <span className="text-gray-600">Not Answered</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-5 h-5 bg-[#191A23] rounded-[8px]"></div>
+                                <span className="text-gray-600">Current</span>
+                            </div>
+                        </div>
+
+                        {/* Submit Button */}
+                        <motion.button
                             onClick={() => setShowSubmitConfirm(true)}
-                            className="flex items-center gap-2 px-4 py-2 bg-[#191A23] text-[#B9FF66] rounded-lg font-semibold hover:bg-[#2a2b3a] transition-colors"
+                            whileHover={{ scale: 1.02, y: -2 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-[#191A23] text-[#B9FF66] rounded-[14px] font-bold hover:bg-[#2a2b3a] hover:shadow-xl hover:shadow-[#191A23]/30 transition-all"
                         >
                             <Flag className="w-5 h-5" />
                             Submit Quiz
-                        </button>
-
-                        <button
-                            onClick={() => setCurrentQuestion(Math.min(quiz.questions.length - 1, currentQuestion + 1))}
-                            disabled={currentQuestion === quiz.questions.length - 1}
-                            className="flex items-center gap-2 px-4 py-2 bg-[#B9FF66] text-[#191A23] rounded-lg font-semibold hover:bg-[#a8ee55] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                        >
-                            <span className="hidden sm:inline">Next</span>
-                            <ChevronRight className="w-5 h-5" />
-                        </button>
-                    </div>
+                        </motion.button>
+                    </motion.div>
                 </div>
 
-                {/* Question Navigator */}
-                <div className="bg-white rounded-xl p-4 md:p-6 shadow-sm">
-                    <h3 className="font-bold text-[#191A23] mb-4">Question Navigator</h3>
-                    <div className="grid grid-cols-5 sm:grid-cols-10 gap-2">
-                        {quiz.questions.map((_, idx) => {
-                            const isAnswered = answers[idx] !== undefined;
-                            const isCurrent = idx === currentQuestion;
-
-                            return (
-                                <button
-                                    key={idx}
-                                    onClick={() => setCurrentQuestion(idx)}
-                                    className={`aspect-square rounded-lg font-semibold text-sm transition-all ${
-                                        isCurrent
-                                            ? 'bg-[#191A23] text-[#B9FF66] ring-2 ring-[#B9FF66]'
-                                            : isAnswered
-                                            ? 'bg-[#B9FF66] text-[#191A23]'
-                                            : 'bg-[#F3F3F3] text-gray-600 hover:bg-gray-200'
-                                    }`}
-                                >
-                                    {idx + 1}
-                                </button>
-                            );
-                        })}
-                    </div>
-                    <div className="flex flex-wrap items-center gap-4 mt-4 text-sm">
-                        <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 bg-[#B9FF66] rounded"></div>
-                            <span className="text-gray-600">Answered</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 bg-[#F3F3F3] rounded"></div>
-                            <span className="text-gray-600">Not Answered</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                            <div className="w-6 h-6 bg-[#191A23] rounded"></div>
-                            <span className="text-gray-600">Current</span>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Submit Confirmation Modal */}
-                {showSubmitConfirm && (
-                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            className="bg-white rounded-xl p-6 max-w-md w-full"
-                        >
-                            <div className="flex items-start gap-4 mb-4">
-                                <div className="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <AlertCircle className="w-6 h-6 text-yellow-600" />
-                                </div>
-                                <div>
-                                    <h3 className="text-xl font-bold text-[#191A23] mb-2">Submit Quiz?</h3>
-                                    <p className="text-gray-600 mb-4">
-                                        You have answered {answeredCount} out of {quiz.questions.length} questions.
-                                        {answeredCount < quiz.questions.length && (
-                                            <span className="block mt-2 text-yellow-600 font-semibold">
-                                                {quiz.questions.length - answeredCount} questions are still unanswered.
-                                            </span>
-                                        )}
-                                    </p>
-                                </div>
-                            </div>
-                            <div className="flex gap-3">
-                                <button
-                                    onClick={() => setShowSubmitConfirm(false)}
-                                    className="flex-1 px-4 py-2 bg-[#F3F3F3] text-[#191A23] rounded-lg font-semibold hover:bg-gray-200 transition-colors"
-                                >
-                                    Continue Quiz
-                                </button>
-                                <button
-                                    onClick={handleSubmit}
-                                    className="flex-1 px-4 py-2 bg-[#191A23] text-[#B9FF66] rounded-lg font-semibold hover:bg-[#2a2b3a] transition-colors"
-                                >
-                                    Submit Now
-                                </button>
-                            </div>
-                        </motion.div>
-                    </div>
-                )}
             </div>
+
+            {/* Submit Confirmation Modal */}
+            {showSubmitConfirm && (
+                <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        className="bg-white rounded-[32px] p-8 max-w-md w-full shadow-2xl"
+                    >
+                        <div className="flex items-start gap-4 mb-6">
+                            <div className="w-14 h-14 bg-yellow-100 rounded-[20px] flex items-center justify-center flex-shrink-0">
+                                <AlertCircle className="w-7 h-7 text-yellow-600" />
+                            </div>
+                            <div>
+                                <h3 className="text-2xl font-bold text-[#191A23] mb-2 font-geist">Submit Quiz?</h3>
+                                <p className="text-gray-600 text-base">
+                                    You have answered {answeredCount} out of {quiz.questions.length} questions.
+                                    {answeredCount < quiz.questions.length && (
+                                        <span className="block mt-2 text-yellow-600 font-semibold">
+                                            {quiz.questions.length - answeredCount} questions are still unanswered.
+                                        </span>
+                                    )}
+                                </p>
+                            </div>
+                        </div>
+                        <div className="flex gap-3">
+                            <button
+                                onClick={() => setShowSubmitConfirm(false)}
+                                className="flex-1 px-6 py-3 bg-[#F3F3F3] text-[#191A23] rounded-[14px] font-semibold hover:bg-gray-200 transition-colors"
+                            >
+                                Continue Quiz
+                            </button>
+                            <button
+                                onClick={handleSubmit}
+                                className="flex-1 px-6 py-3 bg-[#191A23] text-[#B9FF66] rounded-[14px] font-bold hover:bg-[#2a2b3a] transition-colors"
+                            >
+                                Submit Now
+                            </button>
+                        </div>
+                    </motion.div>
+                </div>
+            )}
         </DashboardLayout>
     );
 };

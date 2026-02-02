@@ -3,7 +3,13 @@ import { Link } from 'react-router-dom';
 
 const CTA = () => {
     return (
-        <section className="py-16 md:py-24 bg-white relative overflow-hidden">
+        <motion.section 
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.6 }}
+            className="py-16 md:py-24 bg-white relative overflow-hidden"
+        >
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
                 {/* Decorative elements around container */}
                 <motion.div
@@ -43,32 +49,65 @@ const CTA = () => {
                 />
 
                 <motion.div
-                    className="bg-[#F3F3F3] border-2 border-[#191A23] rounded-[24px] md:rounded-[32px] p-8 md:p-12 lg:p-16 text-center"
-                    initial={{ opacity: 0, y: 15 }}
-                    whileInView={{ opacity: 1, y: 0 }}
+                    className="bg-[#F3F3F3] border-2 border-[#191A23] rounded-[24px] md:rounded-[32px] p-8 md:p-12 lg:p-16 text-center relative overflow-hidden"
+                    initial={{ opacity: 0, y: 50, scale: 0.95 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
                     viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
+                    transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                    whileHover={{ scale: 1.02 }}
                 >
-                    <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold font-geist text-[#191A23] mb-4 md:mb-6">
-                        Let's make things happen
-                    </h2>
-                    <p className="text-sm md:text-base lg:text-lg text-[#191A23] max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed px-4">
-                        Contact us today to learn more about how our quiz platform can help your students succeed and achieve their learning goals.
-                    </p>
+                    {/* Background gradient animation */}
                     <motion.div
-                        whileHover={{ scale: 1.05 }}
+                        className="absolute inset-0 bg-gradient-to-br from-[#B9FF66]/5 via-transparent to-[#191A23]/5"
+                        animate={{ 
+                            backgroundPosition: ['0% 0%', '100% 100%', '0% 0%'],
+                        }}
+                        transition={{ duration: 10, repeat: Infinity, ease: "linear" }}
+                    />
+                    
+                    <motion.h2 
+                        className="text-3xl md:text-4xl lg:text-5xl font-bold font-geist text-[#191A23] mb-4 md:mb-6 relative z-10"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                        Let's make things happen
+                    </motion.h2>
+                    <motion.p 
+                        className="text-sm md:text-base lg:text-lg text-[#191A23] max-w-2xl mx-auto mb-8 md:mb-10 leading-relaxed px-4 relative z-10"
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                        Contact us today to learn more about how our quiz platform can help your students succeed and achieve their learning goals.
+                    </motion.p>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.6, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                        whileHover={{ scale: 1.05, y: -5 }}
                         whileTap={{ scale: 0.95 }}
+                        className="relative z-10"
                     >
                         <Link
                             to="/signup"
-                            className="inline-block px-6 md:px-8 py-3 md:py-4 bg-[#191A23] text-white font-semibold text-base md:text-lg rounded-xl transition-all hover:bg-[#B9FF66] hover:text-[#191A23] hover:-translate-y-1 hover:shadow-lg"
+                            className="inline-block px-6 md:px-8 py-3 md:py-4 bg-[#191A23] text-white font-semibold text-base md:text-lg rounded-xl transition-all hover:bg-[#B9FF66] hover:text-[#191A23] hover:shadow-2xl hover:shadow-[#B9FF66]/20 relative overflow-hidden group"
                         >
-                            Get your free proposal
+                            <span className="relative z-10">Get your free proposal</span>
+                            <motion.div
+                                className="absolute inset-0 bg-[#B9FF66]"
+                                initial={{ x: '-100%' }}
+                                whileHover={{ x: 0 }}
+                                transition={{ duration: 0.3 }}
+                            />
                         </Link>
                     </motion.div>
                 </motion.div>
             </div>
-        </section>
+        </motion.section>
     );
 };
 

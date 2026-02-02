@@ -1,264 +1,218 @@
-import { motion, useScroll, useTransform, useSpring, useMotionValue } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Trophy, BookOpen, Zap, Star } from 'lucide-react';
+import { motion } from 'framer-motion';
 
 const Hero = () => {
-    // Mouse parallax setup
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
-    // Smooth spring animation for mouse movement
-    const springConfig = { damping: 25, stiffness: 150 };
-    const springX = useSpring(mouseX, springConfig);
-    const springY = useSpring(mouseY, springConfig);
-
-    // Transformations for different layers
-    const layer1X = useTransform(springX, [-0.5, 0.5], [-20, 20]);
-    const layer1Y = useTransform(springY, [-0.5, 0.5], [-20, 20]);
-
-    const layer2X = useTransform(springX, [-0.5, 0.5], [30, -30]);
-    const layer2Y = useTransform(springY, [-0.5, 0.5], [30, -30]);
-
-    const layer3X = useTransform(springX, [-0.5, 0.5], [-40, 40]);
-    const layer3Y = useTransform(springY, [-0.5, 0.5], [-40, 40]);
-
-    // Handle mouse move
-    const handleMouseMove = (e: React.MouseEvent) => {
-        const { clientX, clientY } = e;
-        const { innerWidth, innerHeight } = window;
-        // Normalize coordinates to -0.5 to 0.5
-        mouseX.set((clientX / innerWidth) - 0.5);
-        mouseY.set((clientY / innerHeight) - 0.5);
-    };
-
-    // Scroll parallax setup
-    const { scrollY } = useScroll();
-    const y1 = useTransform(scrollY, [0, 500], [0, 200]);
-    const y2 = useTransform(scrollY, [0, 500], [0, -50]);
-    // Faster fade out on mobile (300px) vs desktop (500px)
-    const opacity = useTransform(scrollY, [0, typeof window !== 'undefined' && window.innerWidth < 1024 ? 300 : 500], [1, 0]);
-
     return (
-        <section
-            className="relative pt-24 pb-8 lg:pt-48 lg:pb-12 overflow-hidden bg-white min-h-[70vh] lg:min-h-[90vh] flex items-center"
-            onMouseMove={handleMouseMove}
+        <motion.section
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="relative pt-24 pb-32 lg:pt-48 lg:pb-40 overflow-hidden bg-white min-h-screen flex flex-col justify-center"
         >
-            {/* Dynamic Background */}
+            {/* Animated Background Effects */}
+            <div className="absolute inset-0 overflow-hidden z-0 hero-background">
+                {/* Animated SVG Background */}
+                <svg className="absolute inset-0 w-full h-full hero-background" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                            <stop offset="0%" style={{ stopColor: '#B9FF66', stopOpacity: 0.3 }}>
+                                <animate attributeName="stop-color" values="#B9FF66; #4285f4; #B9FF66" dur="8s" repeatCount="indefinite" />
+                            </stop>
+                            <stop offset="100%" style={{ stopColor: '#4285f4', stopOpacity: 0.3 }}>
+                                <animate attributeName="stop-color" values="#4285f4; #B9FF66; #4285f4" dur="8s" repeatCount="indefinite" />
+                            </stop>
+                        </linearGradient>
+                        
+                        <filter id="glow">
+                            <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                    </defs>
+                    
+                    {/* Animated Circles */}
+                    <circle cx="10%" cy="20%" r="100" fill="url(#grad1)" opacity="0.4">
+                        <animate attributeName="cy" values="20%; 80%; 20%" dur="15s" repeatCount="indefinite" />
+                        <animate attributeName="r" values="100; 150; 100" dur="10s" repeatCount="indefinite" />
+                    </circle>
+                    
+                    <circle cx="90%" cy="70%" r="120" fill="url(#grad1)" opacity="0.3">
+                        <animate attributeName="cy" values="70%; 30%; 70%" dur="12s" repeatCount="indefinite" />
+                        <animate attributeName="r" values="120; 80; 120" dur="8s" repeatCount="indefinite" />
+                    </circle>
+                    
+                    <circle cx="50%" cy="50%" r="80" fill="url(#grad1)" opacity="0.2">
+                        <animate attributeName="cx" values="50%; 60%; 40%; 50%" dur="20s" repeatCount="indefinite" />
+                        <animate attributeName="r" values="80; 120; 80" dur="12s" repeatCount="indefinite" />
+                    </circle>
+                    
+                    {/* Animated Lines */}
+                    <line x1="0" y1="30%" x2="100%" y2="30%" stroke="#B9FF66" strokeWidth="2" opacity="0.1" filter="url(#glow)">
+                        <animate attributeName="y1" values="30%; 70%; 30%" dur="10s" repeatCount="indefinite" />
+                        <animate attributeName="y2" values="30%; 70%; 30%" dur="10s" repeatCount="indefinite" />
+                    </line>
+                    
+                    <line x1="0" y1="60%" x2="100%" y2="60%" stroke="#4285f4" strokeWidth="2" opacity="0.1" filter="url(#glow)">
+                        <animate attributeName="y1" values="60%; 40%; 60%" dur="14s" repeatCount="indefinite" />
+                        <animate attributeName="y2" values="60%; 40%; 60%" dur="14s" repeatCount="indefinite" />
+                    </line>
+                </svg>
+                
+                {/* Floating Geometric Shapes */}
+                <div className="absolute top-1/4 left-[15%] w-20 h-20 border-2 border-[#B9FF66] rotate-45 animate-float opacity-20"></div>
+                <div className="absolute top-1/3 right-[20%] w-16 h-16 border-2 border-blue-400 animate-float-delayed opacity-15"></div>
+                <div className="absolute bottom-1/4 left-[25%] w-12 h-12 bg-[#B9FF66] opacity-10 animate-float-slow"></div>
+                <div className="absolute bottom-1/3 right-[15%] w-14 h-14 border-2 border-purple-400 rounded-full animate-float opacity-15"></div>
+            </div>
+
+            {/* Subtle Grid Pattern */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                {/* Grid Pattern */}
                 <div
-                    className="absolute inset-0 opacity-40"
+                    className="absolute inset-0 opacity-20"
                     style={{
                         backgroundImage: `
-                            radial-gradient(circle, rgba(25, 26, 35, 0.08) 1.5px, transparent 1px),
-                            radial-gradient(circle, rgba(185, 255, 102, 0.05) 1px, transparent 1px)
+                            radial-gradient(circle, rgba(25, 26, 35, 0.05) 1px, transparent 1px)
                         `,
-                        backgroundSize: '40px 40px, 60px 60px',
-                        backgroundPosition: '0 0, 30px 30px'
+                        backgroundSize: '50px 50px'
                     }}
-                />
-
-                {/* Moving Blobs */}
-                <motion.div
-                    className="absolute top-[-20%] right-[-10%] w-[600px] h-[600px] bg-[#B9FF66]/20 rounded-full blur-[100px]"
-                    animate={{
-                        scale: [1, 1.2, 1],
-                        rotate: [0, 90, 0],
-                        opacity: [0.3, 0.5, 0.3]
-                    }}
-                    transition={{
-                        duration: 15,
-                        repeat: Infinity,
-                        ease: "linear"
-                    }}
-                    style={{ x: layer1X, y: layer1Y }}
-                />
-                <motion.div
-                    className="absolute bottom-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#191A23]/5 rounded-full blur-[80px]"
-                    animate={{
-                        scale: [1.2, 1, 1.2],
-                        rotate: [0, -45, 0],
-                        opacity: [0.3, 0.5, 0.3]
-                    }}
-                    transition={{
-                        duration: 20,
-                        repeat: Infinity,
-                        ease: "linear"
-                    }}
-                    style={{ x: layer2X, y: layer2Y }}
                 />
             </div>
 
-            {/* Floating Elements (3D-like Icons) */}
-            <div className="absolute inset-0 pointer-events-none z-0">
-                {/* Trophy - Top Right */}
+            {/* Hero Content */}
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center hero-content">
+                {/* Badge */}
                 <motion.div
-                    className="absolute top-[15%] right-[10%] lg:right-[15%] hidden md:block"
-                    style={{ x: layer3X, y: layer3Y }}
-                    animate={{
-                        y: [0, -20, 0],
-                        rotate: [0, 5, 0]
-                    }}
-                    transition={{
-                        duration: 6,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
+                    initial={{ opacity: 0, y: -50 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8, delay: 0.2, ease: [0.42, 0, 0.58, 1] }}
+                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#191A23]/5 border border-[#191A23]/10 mb-8 backdrop-blur-sm"
                 >
-                    <div className="bg-white p-4 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.1)] border border-gray-100 rotate-12 backdrop-blur-sm">
-                        <Trophy className="w-12 h-12 text-[#B9FF66] fill-[#191A23]" />
-                    </div>
+                    <span className="w-2 h-2 rounded-full bg-[#B9FF66] animate-pulse" />
+                    <span className="text-sm font-semibold text-[#191A23]">New Courses Available</span>
                 </motion.div>
 
-                {/* Book - Bottom Left */}
-                <motion.div
-                    className="absolute bottom-[20%] left-[5%] lg:left-[10%] hidden md:block"
-                    style={{ x: layer2X, y: layer2Y }}
-                    animate={{
-                        y: [0, 25, 0],
-                        rotate: [0, -10, 0]
-                    }}
-                    transition={{
-                        duration: 8,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                        delay: 1
-                    }}
+                <motion.h1
+                    initial={{ opacity: 0, x: -100, skewX: -5 }}
+                    animate={{ opacity: 1, x: 0, skewX: 0 }}
+                    transition={{ duration: 1, delay: 0.4, ease: [0.42, 0, 0.58, 1] }}
+                    className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 md:mb-8 leading-tight md:leading-[1.05] font-geist text-[#191A23]"
                 >
-                    <div className="bg-[#191A23] p-4 rounded-2xl shadow-[0_20px_40px_rgba(0,0,0,0.2)] border border-[#191A23] -rotate-6">
-                        <BookOpen className="w-10 h-10 text-[#B9FF66]" />
-                    </div>
-                </motion.div>
+                    Master new skills <br />
+                    <span className="relative inline-block">
+                        with <span className="relative z-10 px-4 text-[#191A23]">WStudy</span>
+                        <motion.span
+                            initial={{ scaleX: 0 }}
+                            animate={{ scaleX: 1 }}
+                            transition={{ duration: 0.6, delay: 0.7, ease: [0.42, 0, 0.58, 1] }}
+                            style={{ transformOrigin: 'left' }}
+                            className="hero-highlight absolute left-0 right-0 top-6 -bottom-2 bg-[#B9FF66] rounded-xl -rotate-2 -z-10"
+                        />
+                    </span>
+                </motion.h1>
 
-                {/* Star - Middle Left */}
-                <motion.div
-                    className="absolute top-[30%] left-[15%] hidden lg:block"
-                    style={{ x: layer1X, y: layer1Y }}
-                    animate={{
-                        scale: [1, 1.1, 1],
-                        rotate: [0, 180, 360]
-                    }}
-                    transition={{
-                        duration: 20,
-                        repeat: Infinity,
-                        ease: "linear"
-                    }}
+                <motion.p
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.8, delay: 0.8, ease: [0.42, 0, 0.58, 1] }}
+                    className="text-sm sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed font-geist px-4"
                 >
-                    <Star className="w-8 h-8 text-[#191A23]/20 fill-[#B9FF66]/30" />
-                </motion.div>
+                    The ultimate platform for interactive learning. Access thousands of quizzes, expert-led courses, and track your progress in real-time.
+                </motion.p>
 
-                {/* Zap - Bottom Right */}
                 <motion.div
-                    className="absolute bottom-[30%] right-[20%] hidden lg:block"
-                    style={{ x: layer2X, y: layer2Y }}
-                    animate={{
-                        y: [0, -15, 0],
-                        opacity: [0.5, 0.8, 0.5]
-                    }}
-                    transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                >
-                    <Zap className="w-12 h-12 text-[#B9FF66] opacity-60" />
-                </motion.div>
-            </div>
-
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-                <motion.div className="lg:block" style={{ y: y1, opacity }}>
-                    {/* Badge */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6 }}
-                        className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#191A23]/5 border border-[#191A23]/10 mb-8 backdrop-blur-sm"
-                    >
-                        <span className="w-2 h-2 rounded-full bg-[#B9FF66] animate-pulse" />
-                        <span className="text-sm font-semibold text-[#191A23]">New Courses Available</span>
-                    </motion.div>
-
-                    <motion.h1
-                        className="text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-6 md:mb-8 leading-tight md:leading-[1.05] font-geist text-[#191A23]"
-                        initial={{ opacity: 0, y: 30 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.2 }}
-                    >
-                        Master new skills <br />
-                        <span className="relative inline-block">
-                            with <span className="relative z-10 px-4 text-[#191A23]">WStudy</span>
-                            <motion.span
-                                className="absolute inset-0 bg-[#B9FF66] rounded-xl -rotate-2 -z-10"
-                                initial={{ scale: 0, rotate: 0 }}
-                                animate={{ scale: 1, rotate: -2 }}
-                                transition={{ duration: 0.5, delay: 0.8, type: "spring" }}
-                            />
-                        </span>
-                    </motion.h1>
-
-                    <motion.p
-                        className="text-sm sm:text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed font-geist px-4"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                    >
-                        The ultimate platform for interactive learning. Access thousands of quizzes, expert-led courses, and track your progress in real-time.
-                    </motion.p>
-
-                    <motion.div
-                        className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto px-4 sm:px-0"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.8, delay: 0.6 }}
-                    >
-                        <Link to="/signup" className="group relative w-full sm:w-auto max-w-xs sm:max-w-none px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-[#191A23] text-white font-bold text-sm sm:text-lg overflow-hidden transition-all hover:shadow-2xl hover:scale-105 active:scale-95 flex justify-center">
-                            <span className="relative z-10 flex items-center gap-2">
-                                Start Learning Free
-                                <motion.span
-                                    animate={{ x: [0, 5, 0] }}
-                                    transition={{ duration: 1.5, repeat: Infinity }}
-                                >
-                                    →
-                                </motion.span>
-                            </span>
-                            <div className="absolute inset-0 bg-[#2a2b3a] translate-y-full transition-transform duration-300 group-hover:translate-y-0" />
-                        </Link>
-
-                        <button className="w-full sm:w-auto max-w-xs sm:max-w-none px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-[#191A23] font-bold text-sm sm:text-lg hover:bg-gray-100 transition-colors flex items-center justify-center gap-2">
-                            <motion.div
-                                className="w-8 h-8 rounded-full border-2 border-[#191A23] flex items-center justify-center"
-                                whileHover={{ scale: 1.1, rotate: 90 }}
-                            >
-                                <span className="text-xs">▶</span>
-                            </motion.div>
-                            Watch Demo
-                        </button>
-                    </motion.div>
-                </motion.div>
-
-                {/* Brand Logos Strip with simple float */}
-                <motion.div
-                    className="mt-4 md:mt-6 pt-4 md:pt-6 pb-8 md:pb-12 border-t border-[#191A23]/10"
-                    style={{ y: y2 }}
                     initial={{ opacity: 0 }}
-                    animate={{ opacity: 0.6 }}
-                    transition={{ duration: 1, delay: 0.8 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5, delay: 1 }}
+                    className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4 w-full sm:w-auto px-4 sm:px-0"
                 >
-                    <p className="text-gray-500 font-medium text-sm mb-4 md:mb-8 uppercase tracking-widest">Trusted by leading institutions</p>
-                    <div className="flex flex-wrap justify-center gap-8 md:gap-16 opacity-70 grayscale hover:grayscale-0 transition-all duration-500">
-                        {['HARVARD', 'MIT', 'STANFORD', 'UDEMY', 'COURSERA', 'KHAN ACADEMY'].map((brand) => (
-                            <motion.span
-                                key={brand}
-                                className="text-base md:text-2xl font-bold text-[#191A23] cursor-default"
-                                whileHover={{ scale: 1.1, color: '#191A23' }}
+                    <motion.div
+                        initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.7, delay: 1.1, ease: [0.22, 1, 0.36, 1] }}
+                        whileHover={{ scale: 1.05, y: -3 }}
+                        whileTap={{ scale: 0.95 }}
+                    >
+                        <Link to="/signup" className="group relative w-full sm:w-auto max-w-xs sm:max-w-none px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-[#191A23] text-white font-bold text-sm sm:text-lg overflow-hidden flex justify-center will-change-transform shadow-lg hover:shadow-2xl hover:shadow-[#191A23]/30 transition-shadow">
+                        <span className="relative z-10 flex items-center gap-2">
+                            Start Learning Free
+                            <motion.span 
+                                className="arrow-icon"
+                                animate={{ x: [0, 5, 0] }}
+                                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
                             >
-                                {brand}
+                                →
                             </motion.span>
+                        </span>
+                        <motion.div 
+                            className="absolute inset-0 bg-gradient-to-r from-[#2a2b3a] to-[#B9FF66]"
+                            initial={{ x: '-100%' }}
+                            whileHover={{ x: 0 }}
+                            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                        />
+                        </Link>
+                    </motion.div>
+
+                    <motion.button
+                        initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                        animate={{ opacity: 1, y: 0, scale: 1 }}
+                        transition={{ duration: 0.7, delay: 1.25, ease: [0.22, 1, 0.36, 1] }}
+                        whileHover={{ scale: 1.05, y: -3 }}
+                        whileTap={{ scale: 0.95 }}
+                        className="w-full sm:w-auto max-w-xs sm:max-w-none px-6 sm:px-8 py-3 sm:py-4 rounded-xl text-[#191A23] font-bold text-sm sm:text-lg hover:bg-gray-100 transition-all flex items-center justify-center gap-3 will-change-transform border-2 border-transparent hover:border-[#B9FF66] group"
+                    >
+                        <motion.div 
+                            className="w-10 h-10 rounded-full border-2 border-[#191A23] flex items-center justify-center group-hover:border-[#B9FF66] group-hover:bg-[#B9FF66] transition-all"
+                            whileHover={{ rotate: 360 }}
+                            transition={{ duration: 0.5 }}
+                        >
+                            <span className="text-sm ml-1 -mt-0.5">▶</span>
+                        </motion.div>
+                        Watch Demo
+                    </motion.button>
+                </motion.div>
+            </div>
+
+            {/* Brand Logos Strip - Infinite Scroll (Separated Section) */}
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 1.3, ease: [0.42, 0, 0.58, 1] }}
+                className="relative z-10 mt-16 pt-8 pb-8 border-t border-[#191A23]/10 bg-white/80 backdrop-blur-sm"
+            >
+                <p className="text-gray-500 font-medium text-sm mb-6 uppercase tracking-widest text-center">Trusted by leading institutions</p>
+                <div className="relative overflow-hidden">
+                    {/* Gradient fade on left and right edges */}
+                    <div className="absolute left-0 top-0 bottom-0 w-24 bg-gradient-to-r from-white/90 to-transparent z-10 pointer-events-none"></div>
+                    <div className="absolute right-0 top-0 bottom-0 w-24 bg-gradient-to-l from-white/90 to-transparent z-10 pointer-events-none"></div>
+                    
+                    <div 
+                        className="flex items-center"
+                        style={{
+                            animation: 'scrollLeft 15s linear infinite',
+                            willChange: 'transform',
+                            transform: 'translate3d(0, 0, 0)',
+                        }}
+                    >
+                        {/* Multiple sets for seamless loop - 6 sets total */}
+                        {[...Array(6)].map((_, setIndex) => (
+                            ['HARVARD', 'MIT', 'STANFORD', 'UDEMY', 'COURSERA', 'KHAN ACADEMY'].map((brand, index) => (
+                                <span
+                                    key={`${brand}-${setIndex}-${index}`}
+                                    className="brand-item text-base sm:text-lg md:text-xl lg:text-2xl font-bold 
+                                             mx-6 sm:mx-8 md:mx-10 lg:mx-14 whitespace-nowrap flex-shrink-0 
+                                             text-[#191A23] hover:text-[#B9FF66]
+                                             transition-colors duration-300 cursor-pointer"
+                                >
+                                    {brand}
+                                </span>
+                            ))
                         ))}
                     </div>
-                </motion.div>
-            </div>
-        </section>
+                </div>
+            </motion.div>
+        </motion.section>
     );
 };
 

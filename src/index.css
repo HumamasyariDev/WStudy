@@ -48,6 +48,10 @@
   /* Light blue for dark mode */
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);
@@ -68,4 +72,197 @@ h6 {
 /* Custom Utilities for Bento Grid */
 .bento-card {
   @apply bg-white rounded-2xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-300;
+}
+
+/* Smooth Transitions for All Interactive Elements */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+a, button {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* Prevent text overflow on mobile */
+.text-responsive {
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Smooth GPU-accelerated transforms */
+.smooth-transform {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Infinite Scroll Animation */
+@keyframes scrollLeft {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Gradient Shift Animation for Brand Text */
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% center;
+  }
+  50% {
+    background-position: 100% center;
+  }
+  100% {
+    background-position: 0% center;
+  }
+}
+
+/* Subtle Pulse Animation */
+@keyframes pulse-subtle {
+  0%, 100% {
+    opacity: 0.8;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+}
+
+/* Floating Animations for About Section */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  25% {
+    transform: translateY(-15px) translateX(5px);
+  }
+  50% {
+    transform: translateY(-8px) translateX(-5px);
+  }
+  75% {
+    transform: translateY(-20px) translateX(3px);
+  }
+}
+
+@keyframes float-delayed {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  33% {
+    transform: translateY(-12px) translateX(-8px);
+  }
+  66% {
+    transform: translateY(-18px) translateX(6px);
+  }
+}
+
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-25px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-float-delayed {
+  animation: float-delayed 8s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+.animate-float-slow {
+  animation: float-slow 10s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* Blob Animations for Abstract Shapes */
+@keyframes blob {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(20px, -30px) scale(1.05);
+  }
+  50% {
+    transform: translate(-10px, 20px) scale(0.95);
+  }
+  75% {
+    transform: translate(30px, 10px) scale(1.02);
+  }
+}
+
+@keyframes blob-reverse {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
+  }
+  25% {
+    transform: translate(-25px, 15px) scale(0.98);
+  }
+  50% {
+    transform: translate(15px, -20px) scale(1.03);
+  }
+  75% {
+    transform: translate(-10px, -10px) scale(1);
+  }
+}
+
+@keyframes blob-slow {
+  0%, 100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+  33% {
+    transform: translate(40px, -20px) scale(1.1) rotate(5deg);
+  }
+  66% {
+    transform: translate(-30px, 30px) scale(0.9) rotate(-5deg);
+  }
+}
+
+.animate-blob {
+  animation: blob 15s ease-in-out infinite;
+}
+
+.animate-blob-reverse {
+  animation: blob-reverse 18s ease-in-out infinite;
+}
+
+.animate-blob-slow {
+  animation: blob-slow 20s ease-in-out infinite;
+}
+
+/* Animated Gradient Border */
+@keyframes gradient-border {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Shimmer Effect */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 3s linear infinite;
+  background-size: 200% 100%;
 }

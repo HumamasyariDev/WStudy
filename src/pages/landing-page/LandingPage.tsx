@@ -2,8 +2,11 @@ import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import Categories from './components/Categories';
 import Features from './components/Features';
+import AboutSection from './components/AboutSection';
+import PricingSection from './components/PricingSection';
 import CTA from './components/CTA';
 import Footer from './components/Footer';
+import CustomerService from './components/CustomerService';
 
 const LandingPage = () => {
     return (
@@ -13,9 +16,12 @@ const LandingPage = () => {
                 <Hero />
                 <Categories />
                 <Features />
+                <AboutSection />
+                <PricingSection />
                 <CTA />
             </main>
             <Footer />
+            <CustomerService />
         </div>
     );
 };

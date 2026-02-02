@@ -1,5 +1,9 @@
-import { motion } from 'framer-motion';
+import { useEffect, useRef } from 'react';
 import { Target, Trophy, BarChart3, TrendingUp, Users, Smartphone, ArrowRight } from 'lucide-react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 
 const features = [
     { title: 'Personalized Learning', icon: Target, description: 'Adaptive quizzes that adjust to your knowledge level and learning pace.', bg: 'bg-white', textBg: 'bg-[#B9FF66]' },
@@ -11,41 +15,113 @@ const features = [
 ];
 
 const Features = () => {
+    const sectionRef = useRef<HTMLElement>(null);
+    const headerRef = useRef<HTMLDivElement>(null);
+    const cardsRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const ctx = gsap.context(() => {
+            // Header animation - title from left, description from right
+            const headerTitle = headerRef.current?.querySelector('h2');
+            const headerDesc = headerRef.current?.querySelector('p');
+            
+            if (headerTitle) {
+                gsap.fromTo(headerTitle,
+                    { opacity: 0, x: -80 },
+                    {
+                        opacity: 1, x: 0, duration: 0.8, ease: "power3.out",
+                        scrollTrigger: { trigger: headerRef.current, start: "top 80%" }
+                    }
+                );
+            }
+            
+            if (headerDesc) {
+                gsap.fromTo(headerDesc,
+                    { opacity: 0, x: 80 },
+                    {
+                        opacity: 1, x: 0, duration: 0.8, ease: "power3.out", delay: 0.2,
+                        scrollTrigger: { trigger: headerRef.current, start: "top 80%" }
+                    }
+                );
+            }
+
+            // Cards animation - stagger with scale and rotation
+            const cards = cardsRef.current?.querySelectorAll('.feature-card');
+            if (cards) {
+                gsap.fromTo(cards,
+                    { 
+                        opacity: 0, 
+                        y: 60,
+                        scale: 0.9,
+                        rotateX: 15
+                    },
+                    {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        rotateX: 0,
+                        duration: 0.7,
+                        stagger: {
+                            each: 0.1,
+                            from: "start"
+                        },
+                        ease: "power3.out",
+                        scrollTrigger: {
+                            trigger: cardsRef.current,
+                            start: "top 75%"
+                        }
+                    }
+                );
+
+                // Hover animations
+                cards.forEach((card) => {
+                    card.addEventListener('mouseenter', () => {
+                        gsap.to(card, { 
+                            y: -8,
+                            scale: 1.03,
+                            boxShadow: "0 20px 40px rgba(0,0,0,0.15)",
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                    card.addEventListener('mouseleave', () => {
+                        gsap.to(card, { 
+                            y: 0,
+                            scale: 1,
+                            boxShadow: "none",
+                            duration: 0.3,
+                            ease: "power2.out"
+                        });
+                    });
+                });
+            }
+        }, sectionRef);
+
+        return () => ctx.revert();
+    }, []);
+
     return (
-        <section id="features" className="py-16 md:py-24 bg-white">
+        <section ref={sectionRef} id="features" className="py-16 md:py-24 bg-white">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <motion.div
+                <div
+                    ref={headerRef}
                     className="grid md:grid-cols-2 gap-6 md:gap-8 items-start md:items-center mb-12 md:mb-16 pb-6 md:pb-8 border-b-2 border-[#191A23]"
-                    initial={{ opacity: 0, y: 10 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    transition={{ duration: 0.5, ease: "easeOut" }}
                 >
-                    <h2 className="text-3xl md:text-5xl font-bold font-geist text-[#191A23]">
+                    <h2 className="text-3xl md:text-5xl font-bold font-geist text-[#191A23] opacity-0">
                         Why <span className="bg-[#B9FF66] px-2 md:px-3 py-1 rounded-lg">WStudy</span>
                     </h2>
-                    <p className="text-sm md:text-lg text-[#191A23] font-geist leading-relaxed">
+                    <p className="text-sm md:text-lg text-[#191A23] font-geist leading-relaxed opacity-0">
                         Discover powerful features designed to enhance your learning experience and help you achieve your educational goals.
                     </p>
-                </motion.div>
+                </div>
 
-                <div className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 pb-4 md:pb-1 pt-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible md:snap-none">
+                <div ref={cardsRef} className="flex overflow-x-auto snap-x snap-mandatory md:grid md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 pb-4 md:pb-1 pt-2 scrollbar-hide -mx-4 px-4 md:mx-0 md:px-0 md:overflow-visible md:snap-none">
                     {features.map((feature, idx) => {
                         const Icon = feature.icon;
                         return (
-                            <motion.div
+                            <div
                                 key={idx}
-                                className={`${feature.bg} border-2 border-[#191A23] rounded-[24px] md:rounded-[32px] p-6 md:p-8 flex flex-col justify-between min-h-[220px] md:min-h-[280px] cursor-pointer min-w-[85%] snap-center md:min-w-0`}
-                                initial={{ opacity: 0, y: 40, scale: 0.95 }}
-                                whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                                viewport={{ once: true, margin: "-50px" }}
-                                transition={{ duration: 0.6, delay: idx * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                                whileHover={{
-                                    y: -4,
-                                    scale: 1.02,
-                                    boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)",
-                                    transition: { duration: 0.2 }
-                                }}
+                                className={`feature-card ${feature.bg} border-2 border-[#191A23] rounded-[24px] md:rounded-[32px] p-6 md:p-8 flex flex-col justify-between min-h-[220px] md:min-h-[280px] cursor-pointer min-w-[85%] snap-center md:min-w-0 opacity-0`}
                             >
                                 <div className="flex justify-between items-start mb-3 md:mb-4">
                                     <h3 className={`text-base md:text-xl font-semibold ${feature.textBg} text-[#191A23] px-2 py-1 rounded-md inline-block`}>
@@ -64,7 +140,7 @@ const Features = () => {
                                         <span className="text-xs md:text-sm font-semibold">Learn more</span>
                                     </div>
                                 </div>
-                            </motion.div>
+                            </div>
                         );
                     })}
                 </div>
