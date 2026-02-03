@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import { Award, Download, Share2, Calendar, CheckCircle, Trophy, Star, Medal } from 'lucide-react';
 
 const Certificates = () => {
     const navigate = useNavigate();
+    const [searchQuery, setSearchQuery] = useState('');
 
     const certificates = [
         {
@@ -53,10 +55,17 @@ const Certificates = () => {
         },
     ];
 
+    // Filter certificates based on search query
+    const filteredCertificates = certificates.filter(cert =>
+        cert.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        cert.course.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        cert.instructor.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     const stats = [
-        { label: 'Total Certificates', value: certificates.length, icon: Award },
-        { label: 'This Year', value: certificates.filter(c => c.issueDate.includes('2026')).length, icon: Calendar },
-        { label: 'Average Score', value: `${Math.round(certificates.reduce((acc, c) => acc + c.score, 0) / certificates.length)}%`, icon: CheckCircle },
+        { label: 'Total Certificates', value: filteredCertificates.length, icon: Award },
+        { label: 'This Year', value: filteredCertificates.filter(c => c.issueDate.includes('2026')).length, icon: Calendar },
+        { label: 'Average Score', value: `${Math.round(filteredCertificates.reduce((acc, c) => acc + c.score, 0) / filteredCertificates.length)}%`, icon: CheckCircle },
         { label: 'Highest Score', value: '97%', icon: Trophy },
     ];
 
@@ -75,7 +84,7 @@ const Certificates = () => {
                 </motion.div>
 
                 {/* Stats */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
                     {stats.map((stat, idx) => {
                         const Icon = stat.icon;
                         return (
@@ -85,14 +94,14 @@ const Certificates = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ duration: 0.5, delay: 0.1 + idx * 0.05 }}
-                                className="bg-white rounded-xl p-4 shadow-sm"
+                                className="bg-white rounded-xl p-3 md:p-4 shadow-sm overflow-hidden"
                             >
-                                <div className="flex items-center gap-3">
-                                    <div className="w-10 h-10 bg-[#F3F3F3] rounded-lg flex items-center justify-center flex-shrink-0">
-                                        <Icon className="w-5 h-5 text-[#191A23]" />
+                                <div className="flex items-center gap-2 md:gap-3 w-full">
+                                    <div className="w-9 h-9 md:w-10 md:h-10 bg-[#F3F3F3] rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <Icon className="w-4 h-4 md:w-5 md:h-5 text-[#191A23]" />
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                        <p className="text-xl font-bold text-[#191A23]">{stat.value}</p>
+                                        <p className="text-lg md:text-xl font-bold text-[#191A23] leading-tight">{stat.value}</p>
                                         <p className="text-xs text-gray-600 truncate">{stat.label}</p>
                                     </div>
                                 </div>
@@ -102,8 +111,8 @@ const Certificates = () => {
                 </div>
 
                 {/* Certificates Grid */}
-                <div className="grid md:grid-cols-2 gap-6">
-                    {certificates.map((cert, idx) => {
+                <div className="grid md:grid-cols-2 gap-4 md:gap-6">
+                    {filteredCertificates.map((cert, idx) => {
                         const Icon = cert.icon;
                         return (
                             <motion.div
@@ -112,15 +121,11 @@ const Certificates = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true, margin: "-50px" }}
                                 transition={{ duration: 0.5, delay: 0.2 + idx * 0.1 }}
-                                whileHover={{
-                                    y: -5,
-                                    boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)"
-                                }}
-                                className="bg-white rounded-xl overflow-hidden shadow-sm group cursor-pointer"
+                                className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow cursor-pointer"
                                 onClick={() => navigate(`/student/certificate/${cert.id}`)}
                             >
                                 {/* Certificate Header */}
-                                <div className={`relative h-48 ${cert.color} p-6 overflow-hidden`}>
+                                <div className={`relative h-40 md:h-48 ${cert.color} p-4 md:p-6 overflow-hidden`}>
                                     {/* Decorative Elements */}
                                     <div className={`absolute top-0 right-0 w-32 h-32 rounded-full -translate-y-16 translate-x-16 ${cert.color === 'bg-[#191A23]' ? 'bg-[#B9FF66]/10' : 'bg-[#191A23]/10'
                                         }`}></div>
@@ -128,17 +133,17 @@ const Certificates = () => {
                                         }`}></div>
 
                                     <div className="relative z-10 h-full flex flex-col justify-between">
-                                        <div className="flex items-start justify-between">
-                                            <div className={`w-16 h-16 rounded-xl flex items-center justify-center border-2 ${cert.color === 'bg-[#191A23]'
+                                        <div className="flex items-start justify-between gap-2">
+                                            <div className={`w-12 h-12 md:w-16 md:h-16 rounded-xl flex items-center justify-center border-2 flex-shrink-0 ${cert.color === 'bg-[#191A23]'
                                                 ? 'bg-[#B9FF66]/20 border-[#B9FF66]/30'
                                                 : cert.color === 'bg-[#F3F3F3]'
                                                     ? 'bg-white border-gray-300'
                                                     : 'bg-[#191A23]/20 border-[#191A23]/30'
                                                 }`}>
-                                                <Icon className={`w-8 h-8 ${cert.color === 'bg-[#191A23]' ? 'text-[#B9FF66]' : 'text-[#191A23]'
+                                                <Icon className={`w-6 h-6 md:w-8 md:h-8 ${cert.color === 'bg-[#191A23]' ? 'text-[#B9FF66]' : 'text-[#191A23]'
                                                     }`} />
                                             </div>
-                                            <div className={`px-3 py-1 rounded-full border ${cert.color === 'bg-[#191A23]'
+                                            <div className={`px-2 md:px-3 py-1 rounded-full border flex-shrink-0 ${cert.color === 'bg-[#191A23]'
                                                 ? 'bg-[#B9FF66]/20 border-[#B9FF66]/30'
                                                 : cert.color === 'bg-[#F3F3F3]'
                                                     ? 'bg-white border-gray-300'
@@ -148,8 +153,8 @@ const Certificates = () => {
                                                     }`}>{cert.score}%</p>
                                             </div>
                                         </div>
-                                        <div>
-                                            <h3 className={`text-2xl font-bold mb-1 ${cert.color === 'bg-[#191A23]' ? 'text-white' : 'text-[#191A23]'
+                                        <div className="min-w-0">
+                                            <h3 className={`text-lg md:text-2xl font-bold mb-1 leading-tight ${cert.color === 'bg-[#191A23]' ? 'text-white' : 'text-[#191A23]'
                                                 }`}>{cert.title}</h3>
                                             <p className={`text-sm ${cert.color === 'bg-[#191A23]' ? 'text-gray-300' : 'text-gray-600'
                                                 }`}>{cert.course}</p>
@@ -158,8 +163,8 @@ const Certificates = () => {
                                 </div>
 
                                 {/* Certificate Details */}
-                                <div className="p-6 space-y-4">
-                                    <div className="grid grid-cols-2 gap-4 text-sm">
+                                <div className="p-4 md:p-6 space-y-3 md:space-y-4">
+                                    <div className="grid grid-cols-2 gap-3 md:gap-4 text-sm">
                                         <div>
                                             <p className="text-gray-500 text-xs mb-1">Issued Date</p>
                                             <p className="font-semibold text-[#191A23]">{cert.issueDate}</p>
@@ -182,19 +187,20 @@ const Certificates = () => {
                                                 e.stopPropagation();
                                                 // Handle download
                                             }}
-                                            className="flex-1 bg-[#191A23] text-[#B9FF66] py-3 rounded-xl font-semibold text-sm hover:bg-[#2a2b3a] transition-colors flex items-center justify-center gap-2"
+                                            className="flex-1 bg-[#191A23] text-[#B9FF66] py-2.5 md:py-3 rounded-xl font-semibold text-xs md:text-sm hover:bg-[#2a2b3a] transition-colors flex items-center justify-center gap-2"
                                         >
-                                            <Download size={16} />
-                                            Download
+                                            <Download size={14} className="md:w-4 md:h-4" />
+                                            <span className="hidden sm:inline">Download</span>
+                                            <span className="sm:hidden">Get</span>
                                         </button>
                                         <button 
                                             onClick={(e) => {
                                                 e.stopPropagation();
                                                 // Handle share
                                             }}
-                                            className="px-4 py-3 bg-[#F3F3F3] text-[#191A23] rounded-xl font-semibold text-sm hover:bg-gray-200 transition-colors"
+                                            className="px-3 md:px-4 py-2.5 md:py-3 bg-[#F3F3F3] text-[#191A23] rounded-xl font-semibold text-xs md:text-sm hover:bg-gray-200 transition-colors"
                                         >
-                                            <Share2 size={16} />
+                                            <Share2 size={14} className="md:w-4 md:h-4" />
                                         </button>
                                     </div>
                                 </div>
@@ -226,7 +232,7 @@ const Certificates = () => {
                 </motion.div>
 
                 {/* Empty State (if no certificates) */}
-                {certificates.length === 0 && (
+                {filteredCertificates.length === 0 && (
                     <motion.div
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}

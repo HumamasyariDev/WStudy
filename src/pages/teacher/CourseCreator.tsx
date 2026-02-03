@@ -1,10 +1,12 @@
 import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardLayout from '../../components/layout/DashboardLayout';
 import SuccessModal from '../../components/ui/SuccessModal';
 import WarningModal from '../../components/ui/WarningModal';
-import { ArrowLeft, Upload, Plus, X, Save } from 'lucide-react';
+import AiPromptModal from '../../components/ui/AiPromptModal';
+import { ArrowLeft, Upload, Plus, X, Save, BookOpen, Wand2, Loader2 } from 'lucide-react';
+import { generateCourseWithAI as generateWithAI } from '../../services/aiService';
 
 const CourseCreator = () => {
     const navigate = useNavigate();
@@ -12,10 +14,21 @@ const CourseCreator = () => {
     const [courseDescription, setCourseDescription] = useState('');
     const [category, setCategory] = useState('');
     const [duration, setDuration] = useState('');
+    const [thumbnail, setThumbnail] = useState('');
     const [modules, setModules] = useState([{ id: 1, title: '', lessons: 0 }]);
     const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [showWarningModal, setShowWarningModal] = useState(false);
     const [warningMessage, setWarningMessage] = useState('');
+    const [aiPrompt, setAiPrompt] = useState('');
+    const [isGenerating, setIsGenerating] = useState(false);
+    const [showAiSection, setShowAiSection] = useState(false);
+    const [showAiPromptModal, setShowAiPromptModal] = useState(false);
+    const [showAiPage, setShowAiPage] = useState(false);
+
+    useEffect(() => {
+        // Show AI prompt modal on page load
+        setShowAiPromptModal(true);
+    }, []);
 
     const addModule = () => {
         setModules([...modules, { id: modules.length + 1, title: '', lessons: 0 }]);
@@ -25,9 +38,210 @@ const CourseCreator = () => {
         setModules(modules.filter(m => m.id !== id));
     };
 
+    const generateCourseWithAI = async () => {
+        if (!aiPrompt.trim()) {
+            setWarningMessage('Please enter a course description for AI to generate.');
+            setShowWarningModal(true);
+            return;
+        }
+
+        setIsGenerating(true);
+
+        try {
+            // Call real AI service
+            const result = await generateWithAI(aiPrompt);
+            
+            // Set generated data
+            setCourseTitle(result.title);
+            setCourseDescription(result.description);
+            setCategory(result.category);
+            setDuration(result.duration);
+            setThumbnail(result.thumbnail);
+            setModules(result.modules);
+            
+            setIsGenerating(false);
+            setShowAiPage(false);
+            setShowAiSection(false);
+        } catch (error) {
+            setIsGenerating(false);
+            setWarningMessage(error instanceof Error ? error.message : 'Failed to generate course. Please try again.');
+            setShowWarningModal(true);
+        }
+    };
+
     return (
         <DashboardLayout>
+            {/* AI Prompt Modal */}
+            <AiPromptModal
+                isOpen={showAiPromptModal}
+                onClose={() => setShowAiPromptModal(false)}
+                onUseAI={() => {
+                    setShowAiPromptModal(false);
+                    setShowAiPage(true);
+                }}
+                onCreateManually={() => {
+                    setShowAiPromptModal(false);
+                    setShowAiPage(false);
+                }}
+                title="Create Course with AI"
+                description="Let AI help you create a complete course structure in seconds"
+            />
+
+            {/* AI Generation Page */}
+            {showAiPage ? (
+                <div className="min-h-screen bg-white p-8">
+                    <div className="max-w-3xl mx-auto">
+                        {/* Header */}
+                        <div className="mb-8">
+                            <button
+                                onClick={() => setShowAiPage(false)}
+                                className="flex items-center gap-2 text-gray-600 hover:text-[#191A23] mb-6 transition-colors"
+                            >
+                                <ArrowLeft className="w-5 h-5" />
+                                <span>Back</span>
+                            </button>
+                            <h1 className="text-3xl font-bold text-[#191A23] mb-2">Quick Course Builder</h1>
+                            <p className="text-gray-600">Tell us about your course and we'll create the structure for you</p>
+                        </div>
+
+                        {/* Form */}
+                        <div className="bg-white rounded-xl border border-gray-200 p-8">
+                            <div className="space-y-6">
+                                {/* Prompt Input */}
+                                <div>
+                                    <label className="block text-sm font-semibold text-[#191A23] mb-2">
+                                        Course Description
+                                    </label>
+                                    <textarea
+                                        value={aiPrompt}
+                                        onChange={(e) => setAiPrompt(e.target.value)}
+                                        placeholder="Example: A comprehensive web development course covering HTML, CSS, JavaScript, React, and building real-world projects. Include modules on responsive design, API integration, and deployment..."
+                                        rows={6}
+                                        disabled={isGenerating}
+                                        className="w-full px-4 py-3 bg-white text-[#191A23] rounded-lg border border-gray-300 focus:border-[#191A23] focus:ring-2 focus:ring-[#191A23]/10 outline-none transition-all resize-none placeholder:text-gray-400 disabled:opacity-50 text-sm"
+                                    />
+                                    <p className="text-xs text-gray-500 mt-2">Include topics, target audience, and learning objectives for best results</p>
+                                </div>
+
+                                {/* Action Button */}
+                                <div className="flex justify-end">
+                                    <button
+                                        onClick={generateCourseWithAI}
+                                        disabled={isGenerating || !aiPrompt.trim()}
+                                        className="px-6 py-3 bg-[#191A23] text-white rounded-lg font-semibold hover:bg-[#2a2b3a] transition-colors flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    >
+                                        {isGenerating ? (
+                                            <>
+                                                <Loader2 className="w-5 h-5 animate-spin" />
+                                                <span>Creating...</span>
+                                            </>
+                                        ) : (
+                                            <>
+                                                <span>Create Course Structure</span>
+                                            </>
+                                        )}
+                                    </button>
+                                </div>
+
+                                {/* Loading State */}
+                                {isGenerating && (
+                                    <div className="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                                        <div className="flex items-center gap-3">
+                                            <Loader2 className="w-5 h-5 text-[#191A23] animate-spin" />
+                                            <div>
+                                                <p className="text-sm font-semibold text-[#191A23]">Creating course structure...</p>
+                                                <p className="text-xs text-gray-600">This may take a few moments</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ) : (
             <div className="space-y-6 overflow-x-hidden max-w-5xl mx-auto">
+                {/* AI Generation Section */}
+                {showAiSection && (
+                    <motion.div
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
+                        className="bg-gradient-to-br from-[#B9FF66] via-[#a8ee55] to-[#B9FF66] rounded-2xl p-8 shadow-xl relative overflow-hidden"
+                    >
+                        {/* Animated Background */}
+                        <div className="absolute inset-0 opacity-20">
+                            <div className="absolute top-0 right-0 w-64 h-64 bg-white rounded-full blur-3xl animate-pulse"></div>
+                            <div className="absolute bottom-0 left-0 w-48 h-48 bg-[#191A23] rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }}></div>
+                        </div>
+
+                        <div className="relative z-10">
+                            <div className="flex items-center gap-3 mb-4">
+                                <div className="p-3 bg-[#191A23] rounded-xl">
+                                    <BookOpen className="w-6 h-6 text-[#B9FF66]" />
+                                </div>
+                                <div>
+                                    <h2 className="text-2xl font-bold text-[#191A23] font-geist">AI Course Generator</h2>
+                                    <p className="text-sm text-[#191A23]/80">Let AI create your course structure instantly</p>
+                                </div>
+                            </div>
+
+                            <div className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-semibold text-[#191A23] mb-2">Describe your course idea</label>
+                                    <textarea
+                                        value={aiPrompt}
+                                        onChange={(e) => setAiPrompt(e.target.value)}
+                                        placeholder="e.g., A comprehensive course on web development covering HTML, CSS, JavaScript, React, and modern frameworks..."
+                                        rows={3}
+                                        disabled={isGenerating}
+                                        className="w-full px-4 py-3 bg-white text-[#191A23] rounded-xl border-2 border-transparent focus:border-[#191A23] outline-none transition-all resize-none placeholder:text-gray-400 disabled:opacity-50"
+                                    />
+                                </div>
+
+                                <div className="flex flex-wrap gap-3">
+                                    <button
+                                        onClick={generateCourseWithAI}
+                                        disabled={isGenerating}
+                                        className="px-8 py-3 bg-[#191A23] text-[#B9FF66] rounded-xl font-bold hover:bg-[#2a2b3a] transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+                                    >
+                                        {isGenerating ? (
+                                            <>
+                                                <Loader2 className="w-5 h-5 animate-spin" />
+                                                Generating...
+                                            </>
+                                        ) : (
+                                            <>
+                                                <Wand2 className="w-5 h-5" />
+                                                Generate with AI
+                                            </>
+                                        )}
+                                    </button>
+                                    <button
+                                        onClick={() => setShowAiSection(false)}
+                                        disabled={isGenerating}
+                                        className="px-6 py-3 bg-white text-[#191A23] rounded-xl font-semibold hover:bg-gray-50 transition-colors disabled:opacity-50"
+                                    >
+                                        Create Manually
+                                    </button>
+                                </div>
+
+                                {isGenerating && (
+                                    <div className="bg-white/50 backdrop-blur-sm rounded-xl p-4">
+                                        <div className="flex items-center gap-3">
+                                            <Loader2 className="w-5 h-5 text-[#191A23] animate-spin" />
+                                            <div>
+                                                <p className="text-sm font-semibold text-[#191A23]">AI is working its magic...</p>
+                                                <p className="text-xs text-[#191A23]/70">Generating course structure, modules, and content</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </motion.div>
+                )}
+
                 {/* Header */}
                 <div className="flex items-center gap-4">
                     <button
@@ -38,7 +252,9 @@ const CourseCreator = () => {
                     </button>
                     <div className="flex-1">
                         <h1 className="text-2xl md:text-3xl font-bold text-[#191A23] font-geist">Create New Course</h1>
-                        <p className="text-sm text-gray-600">Build an engaging course for your students</p>
+                        <p className="text-sm text-gray-600">
+                            {showAiSection ? 'Use AI or build manually' : 'Build an engaging course for your students'}
+                        </p>
                     </div>
                     <button
                         onClick={() => {
@@ -120,14 +336,29 @@ const CourseCreator = () => {
                             </div>
                         </div>
 
-                        {/* Thumbnail Upload */}
+                        {/* Thumbnail Display */}
                         <div>
                             <label className="block text-sm font-semibold text-[#191A23] mb-2">Course Thumbnail</label>
-                            <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center hover:border-[#191A23] transition-colors cursor-pointer">
-                                <Upload className="w-12 h-12 text-gray-400 mx-auto mb-2" />
-                                <p className="text-sm text-gray-600 mb-1">Click to upload or drag and drop</p>
-                                <p className="text-xs text-gray-400">PNG, JPG up to 10MB</p>
-                            </div>
+                            {thumbnail ? (
+                                <div className="relative rounded-xl overflow-hidden border-2 border-gray-200" style={{ aspectRatio: '16/9' }}>
+                                    <img 
+                                        src={thumbnail} 
+                                        alt="Course thumbnail" 
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <div className="absolute top-2 right-2 bg-[#B9FF66] text-[#191A23] px-3 py-1 rounded-lg text-xs font-semibold">
+                                        AI Generated
+                                    </div>
+                                </div>
+                            ) : (
+                                <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center" style={{ aspectRatio: '16/9' }}>
+                                    <div className="flex flex-col items-center justify-center h-full">
+                                        <Upload className="w-12 h-12 text-gray-400 mb-2" />
+                                        <p className="text-sm text-gray-600 mb-1">Thumbnail will be auto-generated by AI</p>
+                                        <p className="text-xs text-gray-400">16:9 YouTube-style format</p>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                     </div>
                 </motion.div>
@@ -158,12 +389,24 @@ const CourseCreator = () => {
                                 </div>
                                 <input
                                     type="text"
+                                    value={module.title}
+                                    onChange={(e) => {
+                                        const newModules = [...modules];
+                                        newModules[idx].title = e.target.value;
+                                        setModules(newModules);
+                                    }}
                                     placeholder="Module title"
                                     className="flex-1 min-w-[150px] px-4 py-2 bg-white text-[#191A23] rounded-lg border-2 border-transparent focus:border-[#191A23] outline-none transition-all placeholder:text-gray-400"
                                 />
                                 <div className="flex items-center gap-2">
                                     <input
                                         type="number"
+                                        value={module.lessons || ''}
+                                        onChange={(e) => {
+                                            const newModules = [...modules];
+                                            newModules[idx].lessons = parseInt(e.target.value) || 0;
+                                            setModules(newModules);
+                                        }}
                                         placeholder="Lessons"
                                         className="w-20 px-3 py-2 bg-white text-[#191A23] rounded-lg border-2 border-transparent focus:border-[#191A23] outline-none transition-all placeholder:text-gray-400 text-sm"
                                     />
@@ -206,6 +449,7 @@ const CourseCreator = () => {
                     </div>
                 </motion.div>
             </div>
+            )}
 
             {/* Success Modal */}
             <SuccessModal

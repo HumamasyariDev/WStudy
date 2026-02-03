@@ -24,7 +24,7 @@ const MyCourses = () => {
             duration: '12 weeks',
             lessons: 48,
             nextLesson: 'Derivatives and Limits',
-            thumbnail: 'bg-[#B9FF66]'
+            thumbnail: 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400&h=300&fit=crop'
         },
         {
             id: 2,
@@ -38,7 +38,7 @@ const MyCourses = () => {
             duration: '10 weeks',
             lessons: 36,
             nextLesson: 'Cell Structure',
-            thumbnail: 'bg-[#191A23]'
+            thumbnail: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=400&h=300&fit=crop'
         },
         {
             id: 3,
@@ -52,7 +52,7 @@ const MyCourses = () => {
             duration: '8 weeks',
             lessons: 24,
             nextLesson: 'Basic Conversations',
-            thumbnail: 'bg-[#F3F3F3]'
+            thumbnail: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=400&h=300&fit=crop'
         },
         {
             id: 4,
@@ -66,7 +66,7 @@ const MyCourses = () => {
             duration: '16 weeks',
             lessons: 64,
             nextLesson: 'React Fundamentals',
-            thumbnail: 'bg-[#B9FF66]'
+            thumbnail: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?w=400&h=300&fit=crop'
         },
         {
             id: 5,
@@ -80,7 +80,7 @@ const MyCourses = () => {
             duration: '6 weeks',
             lessons: 18,
             nextLesson: 'Color Theory',
-            thumbnail: 'bg-[#191A23]'
+            thumbnail: 'https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?w=400&h=300&fit=crop'
         },
         {
             id: 6,
@@ -94,7 +94,7 @@ const MyCourses = () => {
             duration: '14 weeks',
             lessons: 42,
             nextLesson: 'Renaissance Period',
-            thumbnail: 'bg-[#F3F3F3]'
+            thumbnail: 'https://images.unsplash.com/photo-1461360370896-922624d12aa1?w=400&h=300&fit=crop'
         },
     ];
 
@@ -134,7 +134,7 @@ const MyCourses = () => {
                                 placeholder="Search courses..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="w-full pl-10 pr-4 py-2.5 md:py-3 bg-[#F3F3F3] rounded-xl border-2 border-transparent focus:border-[#191A23] focus:bg-white outline-none transition-all text-sm"
+                                className="w-full pl-10 pr-4 py-2.5 md:py-3 bg-[#F3F3F3] rounded-xl border-2 border-transparent focus:border-[#191A23] focus:bg-white outline-none transition-all text-sm text-[#191A23] placeholder:text-gray-400"
                             />
                         </div>
 
@@ -210,13 +210,18 @@ const MyCourses = () => {
                                 className="bg-white rounded-xl overflow-hidden shadow-sm group cursor-pointer w-full"
                             >
                                 {/* Thumbnail */}
-                                <div className={`h-40 ${course.thumbnail} relative overflow-hidden`}>
+                                <div className="relative overflow-hidden bg-gray-100" style={{ aspectRatio: '16/9' }}>
+                                    <img 
+                                        src={course.thumbnail} 
+                                        alt={course.title}
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent"></div>
                                     <div className="absolute top-4 right-4 bg-white px-3 py-1 rounded-full text-sm font-bold text-[#191A23]">
                                         {course.progress}%
                                     </div>
                                     <div className="absolute bottom-4 left-4">
-                                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shadow-sm ${course.thumbnail === 'bg-[#191A23]' ? 'bg-[#B9FF66]' : 'bg-white'
-                                            }`}>
+                                        <div className="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg">
                                             <Icon className="w-6 h-6 text-[#191A23]" />
                                         </div>
                                     </div>

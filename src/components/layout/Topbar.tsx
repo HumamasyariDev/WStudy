@@ -1,4 +1,4 @@
-import { Bell, Search, Menu } from 'lucide-react';
+import { Bell, Menu } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 
 interface TopbarProps {
@@ -31,15 +31,6 @@ const Topbar = ({ onMenuClick }: TopbarProps) => {
             </div>
 
             <div className="flex items-center gap-3">
-                <div className="relative hidden md:block">
-                    <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                    <input
-                        type="text"
-                        placeholder="Search courses..."
-                        className="pl-11 pr-4 py-2.5 rounded-xl bg-gray-50 border border-gray-200 focus:border-indigo-300 focus:ring-2 focus:ring-indigo-100 outline-none text-sm w-64 text-gray-800 placeholder-gray-400 transition-all"
-                    />
-                </div>
-
                 <button className="relative p-2.5 rounded-xl hover:bg-gray-50 transition-colors text-gray-600">
                     <Bell size={20} />
                     <span className="absolute top-1.5 right-1.5 w-2 h-2 bg-indigo-500 rounded-full border-2 border-white"></span>

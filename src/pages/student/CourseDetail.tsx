@@ -111,27 +111,15 @@ const CourseDetail = () => {
                             transition={{ duration: 0.5 }}
                             className="bg-[#191A23] rounded-xl overflow-hidden shadow-sm aspect-video relative"
                         >
-                            {/* Video Placeholder */}
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="text-center">
-                                    <div className="w-20 h-20 bg-[#B9FF66] rounded-full flex items-center justify-center mx-auto mb-4 cursor-pointer hover:scale-110 transition-transform">
-                                        <Play className="w-10 h-10 text-[#191A23] ml-1" />
-                                    </div>
-                                    <p className="text-white font-semibold mb-1">{currentLesson.title}</p>
-                                    <p className="text-gray-400 text-sm">{currentLesson.duration}</p>
-                                </div>
-                            </div>
-
-                            {/* Video Controls Overlay */}
-                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                                <div className="flex items-center gap-2 text-white text-sm">
-                                    <span className="text-[#B9FF66]">00:00</span>
-                                    <div className="flex-1 h-1 bg-white/20 rounded-full">
-                                        <div className="h-full w-1/3 bg-[#B9FF66] rounded-full"></div>
-                                    </div>
-                                    <span>{currentLesson.duration}</span>
-                                </div>
-                            </div>
+                            {/* Functional Video Player */}
+                            <video
+                                controls
+                                className="w-full h-full object-cover"
+                                poster="https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=800&h=450&fit=crop"
+                            >
+                                <source src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4" type="video/mp4" />
+                                Your browser does not support the video tag.
+                            </video>
                         </motion.div>
 
                         {/* Lesson Info */}
@@ -239,7 +227,7 @@ const CourseDetail = () => {
                                                             disabled={lesson.locked}
                                                             className={`w-full p-3 pl-16 flex items-center gap-3 text-left transition-colors ${
                                                                 activeLesson === globalIdx
-                                                                    ? 'bg-[#B9FF66] text-[#191A23]'
+                                                                    ? 'bg-[#B9FF66]'
                                                                     : lesson.locked
                                                                     ? 'opacity-50 cursor-not-allowed'
                                                                     : 'hover:bg-white'
@@ -255,7 +243,7 @@ const CourseDetail = () => {
                                                                 )}
                                                             </div>
                                                             <div className="flex-1 min-w-0">
-                                                                <p className="text-sm font-medium truncate">{lesson.title}</p>
+                                                                <p className="text-sm font-medium text-[#191A23] truncate">{lesson.title}</p>
                                                                 <p className="text-xs text-gray-600">{lesson.duration}</p>
                                                             </div>
                                                         </button>

@@ -212,16 +212,16 @@ const QuizTaking = () => {
                     {/* Question Card */}
                     <motion.div
                         key={currentQuestion}
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-                        className="bg-white/90 backdrop-blur-md rounded-[32px] p-8 md:p-12 shadow-xl border border-gray-200/50 hover:shadow-2xl transition-shadow duration-300"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                        className="bg-white/90 backdrop-blur-md rounded-[32px] p-8 md:p-12 shadow-xl border border-gray-200/50"
                     >
                         {/* Question Number Badge */}
                         <motion.div 
-                            initial={{ scale: 0.8, opacity: 0 }}
-                            animate={{ scale: 1, opacity: 1 }}
-                            transition={{ delay: 0.1, type: "spring", stiffness: 200 }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.1, duration: 0.3 }}
                             className="inline-flex items-center gap-2 bg-[#B9FF66] px-5 py-2.5 rounded-[14px] mb-8 shadow-md shadow-[#B9FF66]/20"
                         >
                             <span className="text-sm font-bold text-[#191A23]">
@@ -231,9 +231,9 @@ const QuizTaking = () => {
 
                         {/* Question Text */}
                         <motion.h2 
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.2 }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.2, duration: 0.3 }}
                             className="text-2xl md:text-3xl font-bold text-[#191A23] mb-10 leading-tight font-geist"
                         >
                             {quiz.questions[currentQuestion].question}
@@ -248,37 +248,31 @@ const QuizTaking = () => {
                             return (
                                 <motion.button
                                     key={idx}
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    transition={{ delay: 0.3 + idx * 0.05 }}
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.3 + idx * 0.08, duration: 0.3 }}
                                     onClick={() => handleAnswerSelect(option)}
-                                    whileHover={{ scale: 1.01, x: 4 }}
-                                    whileTap={{ scale: 0.99 }}
-                                    className={`w-full p-5 rounded-[20px] border-2 transition-all duration-200 text-left flex items-center gap-4 ${
+                                    className={`w-full p-5 rounded-[20px] border-2 transition-colors duration-200 text-left flex items-center gap-4 ${
                                         isSelected
                                             ? 'border-[#B9FF66] bg-[#B9FF66]/10 shadow-lg shadow-[#B9FF66]/10'
                                             : 'border-gray-200 hover:border-[#B9FF66]/50 hover:bg-gray-50 hover:shadow-md'
                                     }`}
                                 >
-                                    <motion.div 
-                                        animate={isSelected ? { scale: [1, 1.1, 1] } : {}}
-                                        transition={{ duration: 0.3 }}
-                                        className={`w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0 transition-all ${
-                                            isSelected
-                                                ? 'bg-[#B9FF66] text-[#191A23] shadow-md'
-                                                : 'bg-gray-100 text-gray-600'
-                                        }`}
-                                    >
+                                    <div className={`w-11 h-11 rounded-full flex items-center justify-center font-bold flex-shrink-0 transition-colors ${
+                                        isSelected
+                                            ? 'bg-[#B9FF66] text-[#191A23] shadow-md'
+                                            : 'bg-gray-100 text-gray-600'
+                                    }`}>
                                         {optionLabel}
-                                    </motion.div>
+                                    </div>
                                     <span className={`flex-1 text-base transition-all ${isSelected ? 'font-semibold text-[#191A23]' : 'text-gray-700'}`}>
                                         {option}
                                     </span>
                                     {isSelected && (
                                         <motion.div
-                                            initial={{ scale: 0, rotate: -90 }}
-                                            animate={{ scale: 1, rotate: 0 }}
-                                            transition={{ type: "spring", stiffness: 200 }}
+                                            initial={{ opacity: 0, scale: 0.8 }}
+                                            animate={{ opacity: 1, scale: 1 }}
+                                            transition={{ duration: 0.2 }}
                                         >
                                             <CheckCircle2 className="w-6 h-6 text-[#B9FF66]" />
                                         </motion.div>
@@ -290,9 +284,9 @@ const QuizTaking = () => {
 
                         {/* Navigation Buttons */}
                         <motion.div 
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.5 }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.5, duration: 0.3 }}
                             className="flex items-center justify-between gap-4 mt-10 pt-8 border-t border-gray-200"
                         >
                             <button
@@ -306,7 +300,7 @@ const QuizTaking = () => {
 
                             <button
                                 onClick={() => setCurrentQuestion(Math.min(quiz.questions.length - 1, currentQuestion + 1))}
-                                disabled={currentQuestion === quiz.questions.length - 1}
+                                disabled={currentQuestion === quiz.questions.length - 1 || !answers[currentQuestion]}
                                 className="flex items-center gap-2 px-6 py-3.5 bg-[#B9FF66] text-[#191A23] rounded-[14px] font-bold hover:bg-[#a8ee55] hover:shadow-lg hover:shadow-[#B9FF66]/30 transition-all disabled:opacity-40 disabled:cursor-not-allowed"
                             >
                                 <span className="hidden sm:inline">Next</span>
@@ -330,19 +324,26 @@ const QuizTaking = () => {
                             {quiz.questions.map((_, idx) => {
                                 const isAnswered = answers[idx] !== undefined;
                                 const isCurrent = idx === currentQuestion;
+                                
+                                // Check if all previous questions are answered (sequential requirement)
+                                const canAccess = idx === 0 || Object.keys(answers).filter(key => parseInt(key) < idx).length === idx;
+                                const isDisabled = !canAccess && !isCurrent;
 
                                 return (
                                     <motion.button
                                         key={idx}
-                                        onClick={() => setCurrentQuestion(idx)}
-                                        whileHover={{ scale: 1.1, y: -2 }}
-                                        whileTap={{ scale: 0.95 }}
+                                        onClick={() => canAccess ? setCurrentQuestion(idx) : null}
+                                        whileHover={canAccess ? { scale: 1.1, y: -2 } : {}}
+                                        whileTap={canAccess ? { scale: 0.95 } : {}}
+                                        disabled={isDisabled}
                                         className={`aspect-square rounded-[12px] font-bold text-sm transition-all ${
                                             isCurrent
                                                 ? 'bg-[#191A23] text-[#B9FF66] ring-2 ring-[#B9FF66] shadow-lg'
                                                 : isAnswered
-                                                ? 'bg-[#B9FF66] text-[#191A23] shadow-md'
-                                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:shadow-md'
+                                                ? 'bg-[#B9FF66] text-[#191A23] shadow-md cursor-pointer'
+                                                : isDisabled
+                                                ? 'bg-gray-200 text-gray-400 cursor-not-allowed opacity-50'
+                                                : 'bg-gray-100 text-gray-600 hover:bg-gray-200 hover:shadow-md cursor-pointer'
                                         }`}
                                     >
                                         {idx + 1}
@@ -358,8 +359,12 @@ const QuizTaking = () => {
                                 <span className="text-gray-600">Answered</span>
                             </div>
                             <div className="flex items-center gap-2">
-                                <div className="w-5 h-5 bg-[#F3F3F3] rounded-[8px]"></div>
-                                <span className="text-gray-600">Not Answered</span>
+                                <div className="w-5 h-5 bg-gray-100 rounded-[8px]"></div>
+                                <span className="text-gray-600">Available</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                                <div className="w-5 h-5 bg-gray-200 rounded-[8px] opacity-50"></div>
+                                <span className="text-gray-600">Locked</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <div className="w-5 h-5 bg-[#191A23] rounded-[8px]"></div>
