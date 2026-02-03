@@ -11,20 +11,6 @@ interface CourseGenerationResult {
     }>;
 }
 
-interface QuizGenerationResult {
-    title: string;
-    course: string;
-    duration: number;
-    passingScore: number;
-    questions: Array<{
-        id: number;
-        question: string;
-        options: string[];
-        correctAnswer: number;
-        points: number;
-    }>;
-}
-
 // Fallback simulation mode when API is unavailable
 const simulateAIGeneration = (prompt: string): CourseGenerationResult => {
     console.log('Using fallback simulation mode');

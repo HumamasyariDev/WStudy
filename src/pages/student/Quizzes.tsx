@@ -7,7 +7,7 @@ import { Clock, Calendar, CheckCircle, AlertCircle, Trophy, Target, Play, BarCha
 const Quizzes = () => {
     const navigate = useNavigate();
     const [activeTab, setActiveTab] = useState<'upcoming' | 'completed'>('upcoming');
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery] = useState('');
 
     const upcomingQuizzes = [
         {

@@ -1,5 +1,10 @@
 node_modules
 
+# Build output
+dist
+dist-ssr
+*.local
+
 # Environment variables
 .env
 .env.local

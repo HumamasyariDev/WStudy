@@ -6,7 +6,7 @@ import { Award, Download, Share2, Calendar, CheckCircle, Trophy, Star, Medal } f
 
 const Certificates = () => {
     const navigate = useNavigate();
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchQuery] = useState('');
 
     const certificates = [
         {
