@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { generateChatResponse } from '../../../services/chatAiService';
 
 interface Message {
     id: string;
@@ -22,6 +23,16 @@ const CustomerService = () => {
     const [isTyping, setIsTyping] = useState(false);
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
+    // Debug: Check if API key is loaded
+    useEffect(() => {
+        console.log('🔍 CustomerService - Environment check:', {
+            mode: import.meta.env.MODE,
+            apiKeyExists: !!import.meta.env.VITE_OPENAI_API_KEY,
+            apiKeyLength: import.meta.env.VITE_OPENAI_API_KEY?.length,
+            apiKeyPrefix: import.meta.env.VITE_OPENAI_API_KEY?.substring(0, 10)
+        });
+    }, []);
+
     const scrollToBottom = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
@@ -30,32 +41,25 @@ const CustomerService = () => {
         scrollToBottom();
     }, [messages]);
 
-    const getBotResponse = (userMessage: string): string => {
-        const lowerMessage = userMessage.toLowerCase();
+    const getBotResponse = async (userMessage: string): Promise<string> => {
+        // Build conversation history for AI context
+        const conversationHistory = messages
+            .filter(m => m.sender !== 'bot' || m.id !== '1') // Exclude initial greeting
+            .map(m => ({
+                role: m.sender === 'user' ? 'user' : 'assistant',
+                content: m.text
+            }));
         
-        if (lowerMessage.includes('halo') || lowerMessage.includes('hi') || lowerMessage.includes('hello')) {
-            return 'Hello! 👋 Welcome to WStudy. How can I assist you today?';
+        try {
+            const response = await generateChatResponse(userMessage, conversationHistory);
+            return response;
+        } catch (error) {
+            console.error('Failed to get AI response:', error);
+            return 'Sorry, I\'m having trouble connecting right now. Please try again in a moment! 😊';
         }
-        if (lowerMessage.includes('course') || lowerMessage.includes('kursus')) {
-            return 'We offer a wide variety of courses! 📚\n\nYou can browse our courses by clicking the "Courses" button above, or visit our Courses section on the website. We have courses in programming, design, business, and more!';
-        }
-        if (lowerMessage.includes('price') || lowerMessage.includes('harga') || lowerMessage.includes('pricing')) {
-            return 'Our pricing is very competitive! 💰\n\nWe offer flexible plans:\n• Free Trial - Try before you buy\n• Monthly Plan - $29/month\n• Annual Plan - $290/year (Save 17%)\n\nClick "Pricing" above to see full details!';
-        }
-        if (lowerMessage.includes('help') || lowerMessage.includes('bantuan') || lowerMessage.includes('support')) {
-            return 'I\'m here to help! 🤝\n\nYou can:\n• Ask me questions about our courses\n• Learn about pricing plans\n• Get contact information\n• Browse our FAQ section\n\nWhat would you like to know?';
-        }
-        if (lowerMessage.includes('contact') || lowerMessage.includes('email') || lowerMessage.includes('kontak')) {
-            return 'You can reach us at:\n\n📧 Email: info@wstudy.com\n📱 Phone: 555-567-8901\n📍 Address: 1234 Main St, Jakarta, Indonesia\n\nWe typically respond within 24 hours!';
-        }
-        if (lowerMessage.includes('thank') || lowerMessage.includes('terima kasih')) {
-            return 'You\'re welcome! 😊 Is there anything else I can help you with?';
-        }
-        
-        return 'Thanks for your message! 😊\n\nI\'m a simple chatbot, but I can help you with:\n• Course information\n• Pricing details\n• Contact information\n• General support\n\nFeel free to ask me anything!';
     };
 
-    const handleSendMessage = () => {
+    const handleSendMessage = async () => {
         if (!inputValue.trim()) return;
 
         const userMessage: Message = {
@@ -65,20 +69,36 @@ const CustomerService = () => {
             timestamp: new Date()
         };
 
+        const currentInput = inputValue;
         setMessages(prev => [...prev, userMessage]);
         setInputValue('');
         setIsTyping(true);
 
-        setTimeout(() => {
+        // Add small delay for better UX
+        await new Promise(resolve => setTimeout(resolve, 500));
+
+        try {
+            const aiResponseText = await getBotResponse(currentInput);
+            
             const botResponse: Message = {
                 id: (Date.now() + 1).toString(),
-                text: getBotResponse(inputValue),
+                text: aiResponseText,
                 sender: 'bot',
                 timestamp: new Date()
             };
             setMessages(prev => [...prev, botResponse]);
+        } catch (error) {
+            console.error('Error getting bot response:', error);
+            const errorResponse: Message = {
+                id: (Date.now() + 1).toString(),
+                text: 'Sorry, I encountered an error. Please try again! 😊',
+                sender: 'bot',
+                timestamp: new Date()
+            };
+            setMessages(prev => [...prev, errorResponse]);
+        } finally {
             setIsTyping(false);
-        }, 1000 + Math.random() * 1000);
+        }
     };
 
     const handleKeyPress = (e: React.KeyboardEvent) => {

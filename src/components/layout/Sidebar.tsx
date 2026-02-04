@@ -104,7 +104,13 @@ const Sidebar = ({ isOpen, onClose }: SidebarProps) => {
 
                 <div className="p-4 border-t border-gray-200">
                     <div className="bg-gray-50 rounded-2xl p-4 mb-3 flex items-center gap-3">
-                        <img src={user?.avatar} alt="Profile" className="w-12 h-12 rounded-full" />
+                        {user?.avatar ? (
+                            <img src={user.avatar} alt="Profile" className="w-12 h-12 rounded-full" />
+                        ) : (
+                            <div className="w-12 h-12 rounded-full bg-[#B9FF66] flex items-center justify-center font-bold text-[#191A23]">
+                                {user?.name?.charAt(0) || 'U'}
+                            </div>
+                        )}
                         <div className="overflow-hidden flex-1">
                             <p className="text-sm font-bold text-gray-800 truncate">{user?.name}</p>
                             <p className="text-xs text-gray-600 capitalize">{user?.role}</p>
