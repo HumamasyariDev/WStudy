@@ -34,7 +34,7 @@ const AdminOverview = () => {
 
     return (
         <DashboardLayout>
-            <div className="space-y-6 overflow-x-hidden">
+            <div className="space-y-6">
                 {/* Header */}
                 <div className="mb-2">
                     <h1 className="text-2xl md:text-3xl font-bold text-[#191A23] font-geist">Admin Overview</h1>

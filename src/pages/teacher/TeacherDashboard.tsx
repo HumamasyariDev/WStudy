@@ -23,13 +23,12 @@ const TeacherDashboard = () => {
 
     return (
         <DashboardLayout>
-            <div className="space-y-6 overflow-x-hidden">
+            <div className="space-y-6">
 
                 {/* Welcome Card */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                     className="relative bg-gradient-to-r from-[#191A23] to-[#2a2b3a] rounded-2xl p-5 md:p-8 overflow-hidden"
                 >
@@ -60,8 +59,7 @@ const TeacherDashboard = () => {
                             <motion.div
                                 key={idx}
                                 initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
+                                animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.1 + idx * 0.05 }}
                                 whileHover={{
                                     y: -5,
@@ -104,8 +102,7 @@ const TeacherDashboard = () => {
                             <motion.div
                                 key={course.id}
                                 initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
+                                animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.3 + idx * 0.1 }}
                                 whileHover={{
                                     y: -5,
@@ -146,8 +143,7 @@ const TeacherDashboard = () => {
                 {/* Quick Actions */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.6 }}
                     className="bg-white rounded-xl p-6 shadow-sm"
                 >

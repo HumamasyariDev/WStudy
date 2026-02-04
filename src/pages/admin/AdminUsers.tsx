@@ -56,7 +56,7 @@ const AdminUsers = () => {
 
     return (
         <DashboardLayout>
-            <div className="space-y-6 overflow-x-hidden">
+            <div className="space-y-6">
                 {/* Header */}
                 <div className="flex items-center gap-4">
                     <button

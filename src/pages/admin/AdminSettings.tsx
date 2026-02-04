@@ -43,7 +43,7 @@ const AdminSettings = () => {
 
     return (
         <DashboardLayout>
-            <div className="space-y-6 overflow-x-hidden max-w-4xl mx-auto">
+            <div className="space-y-6 max-w-4xl mx-auto">
                 {/* Header */}
                 <div className="flex items-center gap-4">
                     <button

@@ -33,7 +33,7 @@ const StudentDashboard = () => {
 
     return (
         <DashboardLayout>
-            <div className="space-y-6 overflow-x-hidden">
+            <div className="space-y-6">
                 {/* Welcome Card with Gradient */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
@@ -72,8 +72,7 @@ const StudentDashboard = () => {
                             <motion.div
                                 key={idx}
                                 initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
+                                animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.1 + idx * 0.05, ease: "easeOut" }}
                                 whileHover={{
                                     y: -2,
@@ -124,8 +123,7 @@ const StudentDashboard = () => {
                                         <motion.div
                                             key={course.id}
                                             initial={{ opacity: 0, x: -20 }}
-                                            whileInView={{ opacity: 1, x: 0 }}
-                                            viewport={{ once: true, margin: "-20px" }}
+                                            animate={{ opacity: 1, x: 0 }}
                                             transition={{ duration: 0.5, delay: idx * 0.1, ease: "easeOut" }}
                                             whileHover={{ scale: 1.01, transition: { duration: 0.2 } }}
                                             className="p-4 bg-[#F3F3F3] rounded-xl hover:bg-gray-100 cursor-pointer group"
