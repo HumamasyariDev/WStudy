@@ -173,7 +173,7 @@ const QuizBuilder = () => {
                     </div>
                 </div>
             ) : (
-            <div className="space-y-6 overflow-x-hidden max-w-5xl mx-auto">
+            <div className="space-y-6 max-w-5xl mx-auto">
                 {/* AI Generation Section */}
                 {showAiSection && (
                     <motion.div

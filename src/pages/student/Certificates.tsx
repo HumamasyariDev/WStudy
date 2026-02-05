@@ -71,12 +71,11 @@ const Certificates = () => {
 
     return (
         <DashboardLayout>
-            <div className="space-y-6 overflow-x-hidden">
+            <div className="space-y-6">
                 {/* Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                    animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
                 >
                     <h1 className="text-3xl font-bold text-[#191A23] font-geist mb-2">My Certificates</h1>
@@ -91,8 +90,7 @@ const Certificates = () => {
                             <motion.div
                                 key={idx}
                                 initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true }}
+                                animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.1 + idx * 0.05 }}
                                 className="bg-white rounded-xl p-3 md:p-4 shadow-sm overflow-hidden"
                             >
@@ -118,8 +116,7 @@ const Certificates = () => {
                             <motion.div
                                 key={cert.id}
                                 initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                viewport={{ once: true, margin: "-50px" }}
+                                animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.5, delay: 0.2 + idx * 0.1 }}
                                 className="bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow cursor-pointer"
                                 onClick={() => navigate(`/student/certificate/${cert.id}`)}
